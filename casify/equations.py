@@ -19,7 +19,7 @@ def solve(*equations):
 
     solutions = sympy.solve(eqs)
     real_solutions = []
-    for sol in real_solutions:
+    for sol in solutions:
         for key in sol:
             if sol.get(key).is_real:
                 real_solutions.append(sol)
@@ -32,7 +32,7 @@ def solve(*equations):
 
 def løs(*likninger):
     løsning = solve(*likninger)
-    if løsning == "Nn solution":
+    if løsning == "No solution":
         return "Ingen løsning"
     else:
         return løsning
