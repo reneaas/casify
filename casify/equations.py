@@ -29,7 +29,6 @@ def solve(*equations):
         }
     else:
         for sol in solutions:
-            print(sol)
             for key in sol:
                 if sol.get(key).is_real:
                     real_solutions.append(sol)
