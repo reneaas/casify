@@ -1,104 +1,73 @@
-# `signchart`
-`signchart` is a Python package for plotting sign charts for polynomial functions. It is designed to be simple to use to generate beautiful sign charts for polynomial functions.
+# `casify`
+`casify` is a Python package that implements a simplified CAS (Computer Algebra System) for symbolic computation, wrapping around `sympy` for facilitate its computations. The implementation provides both Norwegian and English names for all of its functions. 
 
 ## Basic examples
 
-### Example 1
+### Example 1: solving equations
 
 ```python
-import signchart
+from casify import *
 
-f = "(x**2 + 1)**2 * (x - 1)**2 * (x + 1)"
+solution = solve("x**2 - x - 6 = 0")
+print(solution)
 
-signchart.plot(f=f, include_factors=True)
-signchart.savefig(
-    dirname="dirname",
-    fname="fname",
-)
-
-signchart.show()
 ```
 
-This will generate the following sign chart:
-
-![sign chart](https://raw.githubusercontent.com/reneaas/signchart/refs/heads/main/examples/figures/example_1.svg)
-
-
-### Example 2
+### Eksempel 1: løse likninger
 
 ```python
-import signchart
+from casify import *
 
-f = "x**2 - x - 6"
+løsning = løs("x**2 - x - 6 = 0")
+print(løsning)
 
-signchart.plot(
-    f=f,
-    include_factors=True,
-    color=True,  # Includes colored lines.
-    fn_name="g(x)",  # Names the function g(x)
-)
-
-signchart.savefig(
-    dirname="figures",
-    fname="example_2.svg",
-)
-
-signchart.show()
 ```
 
-This will generate the following sign chart:
 
-![sign chart](https://raw.githubusercontent.com/reneaas/signchart/refs/heads/main/examples/figures/example_2.svg)
-
-### Example 3
+### Example 2: function evalution
 
 ```python
-import signchart
+from casify import *
 
-f = "-2 * x**2 + 2 * x + 12"
+f = function("x**2 - x - 6")
 
-signchart.plot(
-    f=f,
-    include_factors=True,
-    color=True,  # Includes colored lines.
-    fn_name="h(x)",  # Names the function h(x)
-)
-
-signchart.savefig(
-    dirname="figures",
-    fname="example_3.svg",
-)
-
-signchart.show()
+print(f(2)) # Computes f(2)
 ```
 
-This will generate the following sign chart:
-
-![sign chart](https://raw.githubusercontent.com/reneaas/signchart/refs/heads/main/examples/figures/example_3.svg)
-
-
-### Example 4
+### Eksempel 2: funksjonsverdier
 
 ```python
-import signchart
+from casify import *
 
-f = "-3 * (t - 1) * (t + 3)"  # Uses 't' as variable in place of 'x'
+f = funksjon("x**2 - x - 6")
 
-signchart.plot(
-    f=f,
-    include_factors=False,  # excludes linear factors in the polynomial
-    color=False,  # sign lines are black (uncolored)
-    fn_name="x(t)",  # Names the function x(t)
-)
-
-signchart.savefig(
-    dirname="figures",
-    fname="example_4.svg",
-)
-
-signchart.show()
+print(f(2)) # Regner ut f(2)
 ```
 
-This will generate the following sign chart:
 
-![sign chart](https://raw.githubusercontent.com/reneaas/signchart/refs/heads/main/examples/figures/example_4.svg)
+### Example 3: Differentiation
+
+```python
+from casify import *
+
+f = function("x**2 - x - 6")
+
+derivative = f.deriative() # Gives the general expression for the derivative
+print(derivative)
+
+print(f.derivative(2)) # computes f'(2)
+```
+
+### Eksempel 3: Derivasjon
+
+```python
+from casify import *
+
+f = funksjon("x**2 - x - 6")
+
+derivert = f.derivert() # Gir det generelle uttrykket for den deriverte
+
+print(derivert)
+
+print(f.derivert(2)) # regner ut f'(2)
+```
