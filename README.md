@@ -24,7 +24,7 @@ print(løsning)
 ```
 
 
-### Example 2: løse likningssystemer
+### Example 2: solve system of equations
 
 ```python
 from casify import *
