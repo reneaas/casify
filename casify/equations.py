@@ -17,11 +17,20 @@ def solve(*equations):
         else:
             eqs.append(sympy.sympify(eq))
 
-    return sympy.solve(eqs, domain=sympy.S.Reals)
+    solutions = sympy.solve(eqs)
+    solutions = [sol for sol in solutions if sol.is_real]
+    if solutions == []:
+        return "No solution"
+    else:
+        return solutions
 
 
 def løs(*likninger):
-    return solve(*likninger)
+    løsning = solve(*likninger)
+    if løsning == []:
+        return "Ingen løsning"
+    else:
+        return løsning
 
 
 def Løs(*likninger):
