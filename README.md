@@ -52,8 +52,8 @@ from casify import *
 
 f = function("x**2 - x - 6")
 
-derivative = f.deriative() # Gives the general expression for the derivative
-print(derivative)
+
+print(f.derivative()) # Gives the general expression for the derivative
 
 print(f.derivative(2)) # computes f'(2)
 ```
@@ -65,9 +65,7 @@ from casify import *
 
 f = funksjon("x**2 - x - 6")
 
-derivert = f.derivert() # Gir det generelle uttrykket for den deriverte
-
-print(derivert)
+print(f.derivert()) # gir det generelle uttrykket for den deriverte
 
 print(f.derivert(2)) # regner ut f'(2)
 ```
