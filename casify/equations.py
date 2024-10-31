@@ -58,7 +58,10 @@ def Solve(*equations):
 
 
 def solve_inequality(expr):
-    return sympy.solve(expr)
+    solution = sympy.solve(expr)
+    solution = str(solution)
+    solution = solution.replace("|", " ∨ ").replace("&", " ∧ ")
+    return solution
 
 
 def function(f):
@@ -109,5 +112,5 @@ def integral(expr, var="x"):
 
 if __name__ == "__main__":
     # solution = solve("x + y + z = 2", "x + y - z = 0", "x + 2*y + 3*z = 5")
-    solution = solve("x**2 - x - 6 < 0")
+    solution = solve("x**2 - x - 6 = 0")
     print(solution)
