@@ -17,7 +17,7 @@ def solve(*equations):
         else:
             eqs.append(sympy.sympify(eq))
 
-    return sympy.solve(eqs, domain=sympy.S.reals)
+    return sympy.solve(eqs, domain=sympy.S.Reals)
 
 
 def løs(*likninger):
