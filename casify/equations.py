@@ -1,27 +1,6 @@
 import sympy
 
 
-def løs(*likninger):
-    eqs = []
-    for eq in likninger:
-        if "==" in eq:
-            lhs, rhs = eq.split("==")
-            lhs = sympy.sympify(lhs)
-            rhs = sympy.sympify(rhs)
-            eqs.append(sympy.Eq(lhs, rhs))
-        elif "=" in eq:
-            lhs, rhs = eq.split("=")
-            lhs = sympy.sympify(lhs)
-            rhs = sympy.sympify(rhs)
-            eqs.append(sympy.Eq(lhs, rhs))
-
-    return sympy.solve(eqs)
-
-
-def Løs(*likninger):
-    return løs(*likninger)
-
-
 def solve(*equations):
     eqs = []
     for eq in equations:
@@ -38,7 +17,15 @@ def solve(*equations):
         else:
             eqs.append(sympy.sympify(eq))
 
-    return sympy.solve(eqs)
+    return sympy.solve(eqs, domain=sympy.S.reals)
+
+
+def løs(*likninger):
+    return solve(*likninger)
+
+
+def Løs(*likninger):
+    return løs(*likninger)
 
 
 def Solve(*equations):
