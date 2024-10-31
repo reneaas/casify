@@ -6,7 +6,9 @@ def solve(*equations):
 
     # Parse the equations
     for eq in equations:
-        if "==" in eq:
+        if ">=" or "<=" in eq:
+            eqs.append(eq)
+        elif "==" in eq:
             lhs, rhs = eq.split("==")
             lhs = sympy.sympify(lhs)
             rhs = sympy.sympify(rhs)
@@ -17,7 +19,7 @@ def solve(*equations):
             rhs = sympy.sympify(rhs)
             eqs.append(sympy.Eq(lhs, rhs))
         else:
-            eqs.append(sympy.sympify(eq))  # assume it is an inequality
+            eqs.append(sympy.sympify(eq))  # assume it is an inequality with '>' or '<'
 
     solutions = sympy.solve(eqs)
 
