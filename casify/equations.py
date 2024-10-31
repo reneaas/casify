@@ -32,7 +32,7 @@ def solve(*equations):
 
 def løs(*likninger):
     løsning = solve(*likninger)
-    if løsning == []:
+    if løsning == "Nn solution":
         return "Ingen løsning"
     else:
         return løsning
@@ -90,7 +90,3 @@ def deriver(expr, var="x"):
 def integral(expr, var="x"):
     expr = sympy.sympify(expr)
     return sympy.integrate(expr, sympy.symbols(var))
-
-
-if __name__ == "__main__":
-
