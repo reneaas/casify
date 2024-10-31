@@ -18,7 +18,7 @@ def solve(*equations):
             eqs.append(sympy.sympify(eq))
 
     solutions = sympy.solve(eqs)
-    solutions = [sol for sol in solutions if sol.is_real]
+    solutions = [sol for sol in solutions if solutions.get(sol).is_real]
     if solutions == []:
         return "No solution"
     else:
