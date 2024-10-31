@@ -18,11 +18,16 @@ def solve(*equations):
             eqs.append(sympy.sympify(eq))
 
     solutions = sympy.solve(eqs)
-    solutions = [sol for sol in solutions if solutions.get(sol).is_real]
-    if solutions == []:
+    real_solutions = []
+    for sol in real_solutions:
+        for key in sol:
+            if sol.get(key).is_real:
+                real_solutions.append(sol)
+
+    if real_solutions == []:
         return "No solution"
     else:
-        return solutions
+        return real_solutions
 
 
 def løs(*likninger):
@@ -85,3 +90,7 @@ def deriver(expr, var="x"):
 def integral(expr, var="x"):
     expr = sympy.sympify(expr)
     return sympy.integrate(expr, sympy.symbols(var))
+
+
+if __name__ == "__main__":
+
