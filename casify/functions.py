@@ -15,7 +15,7 @@ def function(f):
         else:
             return sympy.diff(f_expr, var, order)
 
-    func.derivative = derivative  # Attach the derivative function
+    func.derivative = derivative
     func.derivert = derivative
 
     return func

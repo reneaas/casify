@@ -3,6 +3,8 @@ import sympy
 
 def solve(*equations):
     eqs = []
+
+    # Parse the equations
     for eq in equations:
         if "==" in eq:
             lhs, rhs = eq.split("==")
@@ -15,16 +17,24 @@ def solve(*equations):
             rhs = sympy.sympify(rhs)
             eqs.append(sympy.Eq(lhs, rhs))
         else:
-            eqs.append(sympy.sympify(eq))
+            eqs.append(sympy.sympify(eq))  # assume it is an inequality
 
     solutions = sympy.solve(eqs)
-    real_solutions = []
-    for sol in solutions:
-        for key in sol:
-            if sol.get(key).is_real:
-                real_solutions.append(sol)
 
-    if real_solutions == []:
+    # Remove complex solutions from the solution set.
+    real_solutions = []
+    if isinstance(solutions, dict):
+        real_solutions = {
+            key: solutions.get(key) for key in solutions if solutions.get(key).is_real
+        }
+    else:
+        for sol in solutions:
+            print(sol)
+            for key in sol:
+                if sol.get(key).is_real:
+                    real_solutions.append(sol)
+
+    if real_solutions == [] or real_solutions == {}:
         return "No solution"
     else:
         return real_solutions
@@ -90,3 +100,8 @@ def deriver(expr, var="x"):
 def integral(expr, var="x"):
     expr = sympy.sympify(expr)
     return sympy.integrate(expr, sympy.symbols(var))
+
+
+if __name__ == "__main__":
+    solution = solve("x + y + z = 2", "x + y - z = 0", "x + 2*y + 3*z = 5")
+    print(solution)
