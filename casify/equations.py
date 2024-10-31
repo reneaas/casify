@@ -6,8 +6,8 @@ def solve(*equations):
 
     # Parse the equations
     for eq in equations:
-        if ">=" or "<=" in eq:
-            eqs.append(eq)
+        if ">" in eq or "<" in eq or ">=" in eq or "<=" in eq:
+            return solve_inequality(eq)
         elif "==" in eq:
             lhs, rhs = eq.split("==")
             lhs = sympy.sympify(lhs)
@@ -57,6 +57,10 @@ def Solve(*equations):
     return solve(*equations)
 
 
+def solve_inequality(expr):
+    return sympy.solve(expr)
+
+
 def function(f):
     f_expr = sympy.sympify(f)
     var = list(f_expr.free_symbols)[0]
@@ -104,5 +108,6 @@ def integral(expr, var="x"):
 
 
 if __name__ == "__main__":
-    solution = solve("x + y + z = 2", "x + y - z = 0", "x + 2*y + 3*z = 5")
+    # solution = solve("x + y + z = 2", "x + y - z = 0", "x + 2*y + 3*z = 5")
+    solution = solve("x**2 - x - 6 < 0")
     print(solution)
