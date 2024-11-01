@@ -16,6 +16,7 @@ def handle_expression(expr):
     func_name, arg = get_func(expr)
     if func_name:
         caller_globals = inspect.stack()[1].frame.f_globals
+        print(f"{caller_globals = }")
 
         func = caller_globals.get(func_name)
         return func(arg)
