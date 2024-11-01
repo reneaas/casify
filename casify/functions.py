@@ -12,15 +12,27 @@ def function(f, domain=None):
     # Derivative function
     def derivative(x=None, order=1):
         if x is not None:
-            return sympy.diff(f_expr, var, order).subs(var, x)
+            return sympy.diff(f_expr, "x", order).subs("x", x)
         else:
-            return sympy.diff(f_expr, var, order)
+            return sympy.diff(f_expr, "x", order)
 
     func.derivative = derivative  # Attach the derivative function
     func.derivert = derivative
 
+    def factor():
+        return sympy.factor(f_expr)
+
+    func.factor = factor
+    func.faktoriser = factor
+
+    def expand():
+        return sympy.expand(f_expr)
+
+    func.expand = expand
+    func.utvid = expand
+
     def plot(domain=domain):
-        numpy_func = sympy.lambdify(var, f_expr, "numpy")
+        numpy_func = sympy.lambdify("x", f_expr, "numpy")
         if domain is not None:
             xmin, xmax = domain
             x_vals = numpy.linspace(xmin, xmax, 1024)
