@@ -1,4 +1,4 @@
-# Introduction
+# Introduksjon
 
 Welcome to the Casify documentation!
 

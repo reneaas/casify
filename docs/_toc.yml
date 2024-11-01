@@ -4,11 +4,8 @@ format: jb-book
 root: index
 
 chapters:
-  - file: introduction
-  - file: installation
-  - file: usage
-  - file: api_reference/intro_no.md
+  - file: no/intro_no.md
     sections:
-    - file: api_reference/algebra.md
-    - file: api_reference/likning.md
-    - file: api_reference/funksjon.md
+    - file: no/dokumentasjon/algebra.md
+    - file: no/dokumentasjon/likning.md
+    - file: no/dokumentasjon/funksjon.md
