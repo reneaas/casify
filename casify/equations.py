@@ -32,8 +32,6 @@ def solve(*equations, numerical=False, pprint=True):
             return solve_inequality(eq)
         elif "==" in eq:
             lhs, rhs = eq.split("==")
-            # lhs = sympy.sympify(lhs)
-            # rhs = sympy.sympify(rhs)
             lhs = handle_expression(lhs)
             rhs = handle_expression(rhs)
 
@@ -43,12 +41,8 @@ def solve(*equations, numerical=False, pprint=True):
             lhs, rhs = eq.split("=")
             lhs = handle_expression(lhs)
             rhs = handle_expression(rhs)
-            # lhs = sympy.sympify(lhs)
-            # rhs = sympy.sympify(rhs)
 
             eqs.append(sympy.Eq(lhs, rhs))
-
-    print(f"{eqs = }")
 
     if numerical:
         solutions = sympy.nsolve(eqs)
