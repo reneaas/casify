@@ -22,6 +22,7 @@ def løs(*likninger, pprint=True):
         'x = -2    ∨    x = 3'
         >>> løs("x + y - z = 1", "x + y + 2*z = 3", "-x + y + z = -1")
         'x = 5/3 ∧ y = 0 ∧ z = 2/3'
+
         >>> f = funksjon("a * x**2 + b*x + c")
         >>> løs("f(1) = 2", "f(-1) = 3", "f(3) = 4")
         'a = 3/8 ∧ b = -1/2 ∧ c = 17/8'

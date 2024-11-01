@@ -64,9 +64,7 @@ def function(f, domain=None):
             xmin, xmax = domain
             x_vals = numpy.linspace(xmin, xmax, 1024)
             codomain = (numpy.min(numpy_func(x_vals)), numpy.max(numpy_func(x_vals)))
-            ymin, ymax = codomain
-            ymin = int(ymin - 1)
-            ymax = int(ymax + 1)
+            ymin, ymax = domain
         else:
             xmin, xmax = (-6, 6)
             ymin, ymax = (-6, 6)
