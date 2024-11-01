@@ -1,0 +1,42 @@
+# docs/_config.yml
+
+# General settings
+title: "Casify Documentation"
+author: "René Alexander Ask"
+# logo: "images/logo.png"  # Place your logo in docs/images/
+
+# Internationalization settings
+language: en  # Default language
+gettext:
+  enabled: true
+  builder: gettext
+  locale_dirs: ["locale/"]
+  locales: ["en", "no"]  # List of supported languages
+
+# Sphinx extensions
+sphinx:
+  extra_extensions:
+    - sphinx.ext.autodoc
+    - sphinx.ext.napoleon
+    - sphinx.ext.intersphinx
+    - sphinx.ext.autosummary
+    - sphinx_intl
+  config:
+    language: en  # Default language
+    locale_dirs: ["locale/"]
+    gettext_compact: false
+    autodoc_member_order: "bysource"
+    autodoc_typehints: "description"
+    napoleon_google_docstring: true
+    napoleon_numpy_docstring: true
+    sys_path:
+      - ../
+
+# Theme settings
+html:
+  # favicon: "images/favicon.ico"
+  theme:
+    name: "sphinx_book_theme"
+    options:
+      logo_only: true
+      navigation_with_keys: true

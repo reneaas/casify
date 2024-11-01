@@ -3,7 +3,8 @@ import re
 import sys
 
 
-def get_func(expr):
+def _get_func(expr):
+    """ """
     match = re.match(r"(\w+)\((-?\w+|-?\d+)\)", expr.strip())
     if match:
         func_name, arg = match.groups()
@@ -12,8 +13,8 @@ def get_func(expr):
         return False, False
 
 
-def handle_expression(expr):
-    func_name, arg = get_func(expr)
+def _handle_expression(expr):
+    func_name, arg = _get_func(expr)
     if func_name:
         main_module = sys.modules["__main__"]
         main_globals = main_module.__dict__
@@ -24,30 +25,46 @@ def handle_expression(expr):
         return sympy.sympify(expr)
 
 
-def solve(*equations, numerical=False, pprint=True):
+def solve(*equations, pprint=True):
+    """Solves an equation or a set of equations or inequalities.
+
+    Args:
+        *equations (str): a variable number of strings representing equations or inequalities.
+        pprint (bool): Gives a mathematical-like output. Defaults to `True`.
+
+    Returns:
+        str or list: A string representation of the solutions if pprint is True, otherwise a list of dictionaries containing the solutions. Return "No solution" if no real solutions are found.
+
+    Examples:
+        >>> from casify import *
+        >>> solve("x**2 - x - 6 = 0")
+        'x = -2    ∨    x = 3'
+        >>> solve("x + y - z = 1", "x + y + 2*z = 3", "-x + y + z = -1")
+        'x = 5/3 ∧ y = 0 ∧ z = 2/3'
+        >>> f = function("a * x**2 + b*x + c")
+        >>> solve("f(1) = 2", "f(-1) = 3", "f(3) = 4")
+        'a = 3/8 ∧ b = -1/2 ∧ c = 17/8'
+    """
     eqs = []
     # Parse the equations
     for eq in equations:
         if ">" in eq or "<" in eq or ">=" in eq or "<=" in eq:
-            return solve_inequality(eq)
+            return _solve_inequality(eq)
         elif "==" in eq:
             lhs, rhs = eq.split("==")
-            lhs = handle_expression(lhs)
-            rhs = handle_expression(rhs)
+            lhs = _handle_expression(lhs)
+            rhs = _handle_expression(rhs)
 
             eqs.append(sympy.Eq(lhs, rhs))
 
         elif "=" in eq:
             lhs, rhs = eq.split("=")
-            lhs = handle_expression(lhs)
-            rhs = handle_expression(rhs)
+            lhs = _handle_expression(lhs)
+            rhs = _handle_expression(rhs)
 
             eqs.append(sympy.Eq(lhs, rhs))
 
-    if numerical:
-        solutions = sympy.nsolve(eqs)
-    else:
-        solutions = sympy.solve(eqs)
+    solutions = sympy.solve(eqs)
 
     # Remove complex solutions from the solution set.
     real_solutions = []
@@ -82,23 +99,44 @@ def solve(*equations, numerical=False, pprint=True):
         return real_solutions
 
 
-def løs(*likninger, numerisk=False, pprint=True):
-    løsning = solve(*likninger, numerical=numerisk, pprint=pprint)
+def løs(*likninger, pprint=True):
+    """Løser én eller flere likninger, eller én eller flere ulikheter.
+
+    Args:
+        *likninger (str): Et variabel antall likninger eller ulikheter separert med komma som representerer likningene eller ulikhetene.
+        pprint (bool): Hvis `True` gir en matematisk tekststreng-representasjon av løsningen. Standardverdi: `True`.
+
+    Returns:
+        str eller list: En tekststreng-representasjon (str) av løsningen(e) hvis `pprint` er `True`. Hvis ikke en liste med dictionaries som inneholder løsningene. Returnerer "Ingen løsning" hvis ingen reelle løsninger finnes.
+
+    Eksempler:
+        >>> from casify import *
+        >>> løs("x**2 - x - 6 = 0")
+        'x = -2    ∨    x = 3'
+        >>> løs("x + y - z = 1", "x + y + 2*z = 3", "-x + y + z = -1")
+        'x = 5/3 ∧ y = 0 ∧ z = 2/3'
+        >>> f = funksjon("a * x**2 + b*x + c")
+        >>> løs("f(1) = 2", "f(-1) = 3", "f(3) = 4")
+        'a = 3/8 ∧ b = -1/2 ∧ c = 17/8'
+    """
+    løsning = solve(*likninger, pprint=pprint)
     if løsning == "No solution":
         return "Ingen løsning"
     else:
         return løsning
 
 
-def Løs(*likninger, numerisk=False, pprint=True):
-    return løs(*likninger, numerisk=numerisk, pprint=pprint)
+def Løs(*likninger, pprint=True):
+    """Alternativ skrivemåte for `løs`."""
+    return løs(*likninger, pprint=pprint)
 
 
-def Solve(*equations, numerical=False, pprint=True):
-    return solve(*equations, numerical=numerical, pprint=pprint)
+def Solve(*equations, pprint=True):
+    """Alternative way to write `solve`."""
+    return solve(*equations, pprint=pprint)
 
 
-def solve_inequality(expr):
+def _solve_inequality(expr):
     solution = sympy.solve(expr)
     solution = str(solution)
     solution = solution.replace("|", " ∨ ").replace("&", " ∧ ")
