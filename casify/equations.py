@@ -1,5 +1,6 @@
 import sympy
 import re
+import inspect
 
 
 def get_func(expr):
@@ -14,7 +15,9 @@ def get_func(expr):
 def handle_expression(expr):
     func_name, arg = get_func(expr)
     if func_name:
-        func = globals().get(func_name)
+        caller_globals = inspect.stack()[1].frame.f_globals
+
+        func = caller_globals.get(func_name)
         return func(arg)
     else:
         return sympy.sympify(expr)
