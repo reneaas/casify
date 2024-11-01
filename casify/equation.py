@@ -50,21 +50,21 @@ def solve(*equations, pprint=True):
     # Parse the equations
     for eq in equations:
         if ">" in eq or "<" in eq:
-            if ">" in eq:
-                lhs, rhs = eq.split(">")
-                sign = ">"
-
-            elif "<" in eq:
-                lhs, rhs = eq.split("<")
-                sign = "<"
-
-            elif ">=" in eq:
+            if ">=" in eq:
                 lhs, rhs = eq.split(">=")
                 sign = ">="
 
             elif "<=" in eq:
                 lhs, rhs = eq.split("<=")
                 sign = "<="
+
+            elif ">" in eq:
+                lhs, rhs = eq.split(">")
+                sign = ">"
+
+            elif "<" in eq:
+                lhs, rhs = eq.split("<")
+                sign = "<"
 
             lhs = _handle_expression(lhs)
             rhs = _handle_expression(rhs)
