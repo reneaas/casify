@@ -68,7 +68,7 @@ def solve(*equations, pprint=True):
 
             lhs = _handle_expression(lhs)
             rhs = _handle_expression(rhs)
-            eq = " ".join([lhs, sign, rhs])
+            eq = " ".join([str(lhs), sign, str(rhs)])
 
             return _solve_inequality(eq)
 
