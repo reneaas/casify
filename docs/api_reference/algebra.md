@@ -1,4 +1,4 @@
-# `algebra`: Algebraiske operasjoner (algebraisk operations)
+# Algebraiske operasjoner (algebraic operations)
 
 ```{eval-rst}
 .. automodule:: casify.algebra

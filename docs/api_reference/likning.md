@@ -1,7 +1,7 @@
-# `functions`: Funksjoner (functions)
+# Likninger, likningssystemer og ulikheter
 
 ```{eval-rst}
-.. automodule:: casify.functions
+.. automodule:: casify.likning
     :members:
     :undoc-members:
     :show-inheritance:

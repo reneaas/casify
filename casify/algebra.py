@@ -22,6 +22,7 @@ def expand(expr):
 
     Returns:
         sympy.Expr: expanded algebraic expression
+
     """
     expr = sympy.sympify(expr)
     return sympy.expand(expr)
@@ -35,6 +36,7 @@ def faktoriser(uttrykk):
 
     Returns:
         sympy.Expr: faktorisert uttrykk
+
     """
     return factor(uttrykk)
 
@@ -47,6 +49,7 @@ def utvid(uttrykk):
 
     Returns:
         sympy.Expr: utvidet algebraisk uttrykk
+
     """
     return expand(uttrykk)
 

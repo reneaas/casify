@@ -1,8 +1,7 @@
-# Equations and inequalities
-
+# Funksjoner
 
 ```{eval-rst}
-.. automodule:: casify.equation
+.. automodule:: casify.funksjon
     :members:
     :undoc-members:
     :show-inheritance:

@@ -1,12 +1,12 @@
 # docs/_config.yml
 
 # General settings
-title: "Casify Documentation"
+title: "Casify"
 author: "René Alexander Ask"
 # logo: "images/logo.png"  # Place your logo in docs/images/
 
 # Internationalization settings
-language: en  # Default language
+language: "no"  # Default language
 gettext:
   enabled: true
   builder: gettext
@@ -22,15 +22,13 @@ sphinx:
     - sphinx.ext.autosummary
     - sphinx_intl
   config:
-    language: en  # Default language
+    language: "no"  # Default language
     locale_dirs: ["locale/"]
     gettext_compact: false
     autodoc_member_order: "bysource"
     autodoc_typehints: "description"
     napoleon_google_docstring: true
     napoleon_numpy_docstring: true
-    sys_path:
-      - ../
 
 # Theme settings
 html:

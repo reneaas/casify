@@ -9,8 +9,8 @@ chapters:
   - file: usage
   - file: api_reference/intro.md
     sections:
-    - file: docs/api_reference/algebra.md
-    - file: docs/api_reference/equations.md
-    - file: docs/api_reference/functions.md
+    - file: api_reference/algebra.md
+    - file: api_reference/equations.md
+    - file: api_reference/functions.md
   - file: examples
   - file: contributing
