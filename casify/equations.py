@@ -1,6 +1,6 @@
 import sympy
 import re
-import inspect
+import sys
 
 
 def get_func(expr):
@@ -15,10 +15,9 @@ def get_func(expr):
 def handle_expression(expr):
     func_name, arg = get_func(expr)
     if func_name:
-        caller_globals = inspect.stack()[1].frame.f_globals
-        print(f"{caller_globals = }")
-
-        func = caller_globals.get(func_name)
+        main_module = sys.modules["__main__"]
+        main_globals = main_module.__dict__
+        func = main_globals.get(func_name)
         return func(arg)
     else:
         return sympy.sympify(expr)
