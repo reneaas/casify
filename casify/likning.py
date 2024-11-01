@@ -3,7 +3,7 @@ import re
 import sys
 
 
-from equation import solve
+from .equation import solve
 
 
 def løs(*likninger, pprint=True):

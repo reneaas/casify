@@ -7,10 +7,8 @@ chapters:
   - file: introduction
   - file: installation
   - file: usage
-  - file: api_reference/intro.md
+  - file: api_reference/intro_no.md
     sections:
     - file: api_reference/algebra.md
-    - file: api_reference/equations.md
-    - file: api_reference/functions.md
-  - file: examples
-  - file: contributing
+    - file: api_reference/likning.md
+    - file: api_reference/funksjon.md

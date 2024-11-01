@@ -2,7 +2,7 @@ import sympy
 import plotmath
 import numpy
 
-from function import function, derivative
+from .function import function, derivative
 
 
 def funksjon(f, definisjonsmengde=None):
