@@ -49,20 +49,38 @@ def solve(*equations, pprint=True):
     eqs = []
     # Parse the equations
     for eq in equations:
-        if ">" in eq or "<" in eq or ">=" in eq or "<=" in eq:
+        if ">" in eq or "<" in eq:
+            if ">" in eq:
+                lhs, rhs = eq.split(">")
+                sign = ">"
+
+            elif "<" in eq:
+                lhs, rhs = eq.split("<")
+                sign = "<"
+
+            elif ">=" in eq:
+                lhs, rhs = eq.split(">=")
+                sign = ">="
+
+            elif "<=" in eq:
+                lhs, rhs = eq.split("<=")
+                sign = "<="
+
+            lhs = _handle_expression(lhs)
+            rhs = _handle_expression(rhs)
+            eq = " ".join([lhs, sign, rhs])
+
             return _solve_inequality(eq)
-        elif "==" in eq:
-            lhs, rhs = eq.split("==")
+
+        else:
+            if "==" in eq:
+                lhs, rhs = eq.split("==")
+
+            elif "=" in eq:
+                lhs, rhs = eq.split("=")
+
             lhs = _handle_expression(lhs)
             rhs = _handle_expression(rhs)
-
-            eqs.append(sympy.Eq(lhs, rhs))
-
-        elif "=" in eq:
-            lhs, rhs = eq.split("=")
-            lhs = _handle_expression(lhs)
-            rhs = _handle_expression(rhs)
-
             eqs.append(sympy.Eq(lhs, rhs))
 
     solutions = sympy.solve(eqs)
