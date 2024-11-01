@@ -4,7 +4,7 @@ import sys
 
 
 def get_func(expr):
-    match = re.match(r"(\w+)\((\w+)\)", expr.strip())
+    match = re.match(r"(\w+)\((-?\w+|-?\d+)\)", expr.strip())
     if match:
         func_name, arg = match.groups()
         return func_name, arg
@@ -18,6 +18,7 @@ def handle_expression(expr):
         main_module = sys.modules["__main__"]
         main_globals = main_module.__dict__
         func = main_globals.get(func_name)
+
         return func(arg)
     else:
         return sympy.sympify(expr)
@@ -46,6 +47,8 @@ def solve(*equations, numerical=False, pprint=True):
             # rhs = sympy.sympify(rhs)
 
             eqs.append(sympy.Eq(lhs, rhs))
+
+    print(f"{eqs = }")
 
     if numerical:
         solutions = sympy.nsolve(eqs)

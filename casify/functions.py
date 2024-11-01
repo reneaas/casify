@@ -5,10 +5,9 @@ import numpy
 
 def function(f, domain=None):
     f_expr = sympy.sympify(f)
-    var = list(f_expr.free_symbols)[0]
 
     def func(x):
-        return f_expr.subs(var, x)
+        return f_expr.subs("x", x)
 
     # Derivative function
     def derivative(x=None, order=1):
