@@ -5,19 +5,18 @@ import numpy
 from .function import function, derivative
 
 
-def funksjon(f, definisjonsmengde=None):
-    """Oppretter en symbolsk funksjon med innebygde metoder.
+class funksjon(function):
+    """A klasse som representerer en matematisk funksjon f.
 
     Args:
-        f (str): En streng som representerer funksjonsuttrykket.
-        definisjonsmengde (tuple, valgfritt): En tuple som representerer definisjonsmengden (xmin, xmax) for plotting. Standard er `None`.
+        f (str): En tekststrengrepresentasjon av f(x).
 
-    Returns:
-        function: Et funksjonsobjekt med ekstra metoder:
-            - derivert(x=None, order=1): Beregner den deriverte av funksjonen.
-            - faktoriser(): Faktoriserer funksjonsuttrykket.
-            - utvid(): Utvider funksjonsuttrykket.
-            - graf(definisjonsmengden=None): Plotter grafen funksjonen innenfor definisjonsmengden. Definisjonsmengden er valgfri og har standardverdi som [-6, 6].
+    Methods:
+        __call__(x): returnerer f(x) for en verdi av x.
+        derivert(x=None, order=1): Regner ut den deriverte, enten uttrykket eller for en bestemt x-verdi.
+        faktoriser(): Faktoriserer f(x)
+        utvid(): Utvider f(x)
+        graf(domain=None): Plotter funksjonsgrafen til f.
 
     Eksempler:
         >>> from casify import *
@@ -26,19 +25,41 @@ def funksjon(f, definisjonsmengde=None):
         9
         >>> f.derivert()
         2*x + 2
+        >>> f.derivert(4)
+        10
         >>> f.faktoriser()
         (x + 1)**2
         >>> g = funksjon("(x + 1) * (x - 3)")
         >>> g.utvid()
         x**2 - 2*x - 3
-        >>> g.graf() # plotter grafen til g
+        >>> g.graf() # viser grafen til g.
     """
-    return function(f, domain=definisjonsmengde)
+
+    def __init__(self, f_expr):
+        super().__init__(f_expr)
+
+    def derivert(self, x=None, order=1):
+        return self.derivative(x, order)
+
+    def faktoriser(self):
+        return self.factor()
+
+    def utvid(self):
+        return self.expand()
+
+    def nullpunkter(self):
+        return self.zeros()
+
+    def integral(self, a=None, b=None):
+        return super().integral(a, b)
+
+    def graf(self, domain=None):
+        return self.graph(domain)
 
 
-def Funksjon(f, definisjonsmengde=None):
+def Funksjon(f):
     """Alternativ skrivemåte for `funksjon`."""
-    return funksjon(f, definisjonsmengde)
+    return funksjon(f)
 
 
 def derivert(uttrykk, var="x"):

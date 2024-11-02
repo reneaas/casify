@@ -2,20 +2,21 @@ import sympy
 import plotmath
 import numpy
 
+from .equation import solve
 
-def function(f, domain=None):
-    """Creates a symbolic function with additional capabilities.
+
+class function:
+    """A class representing a mathematical function.
 
     Args:
         f (str): A string representing the function expression.
-        domain (tuple, optional): A tuple representing the domain (xmin, xmax) for plotting. Defaults to None.
 
-    Returns:
-        function: A function object with additional methods:
-            - derivative(x=None, order=1): Computes the derivative of the function.
-            - factor(): Factors the function expression.
-            - expand(): Expands the function expression.
-            - plot(domain=domain): Plots the function within the specified domain.
+    Methods:
+        __call__(x): Evaluates the function at a given value of x.
+        derivative(x=None, order=1): Computes the derivative of the function.
+        factor(): Factors the function expression.
+        expand(): Expands the function expression.
+        plot(domain=None): Plots the function within the specified domain.
 
     Examples:
         >>> from casify import *
@@ -31,35 +32,42 @@ def function(f, domain=None):
         x**2 - 2*x - 3
         >>> g.graph() # displays the graph of the function
     """
-    f_expr = sympy.sympify(f)
 
-    def func(x):
-        return f_expr.subs("x", x)
+    def __init__(self, f_expr):
+        self._f_expr = sympy.sympify(f_expr)
 
-    # Derivative function
-    def derivative(x=None, order=1):
+    def __call__(self, x):
+        return self._f_expr.subs("x", x)
+
+    def derivative(self, x=None, order=1):
         if x is not None:
-            return sympy.diff(f_expr, "x", order).subs("x", x)
+            return sympy.diff(self._f_expr, "x", order).subs("x", x)
         else:
-            return sympy.diff(f_expr, "x", order)
+            return sympy.diff(self._f_expr, "x", order)
 
-    func.derivative = derivative  # Attach the derivative function
-    func.derivert = derivative
+    def factor(self):
+        return sympy.factor(self._f_expr)
 
-    def factor():
-        return sympy.factor(f_expr)
+    def expand(self):
+        return sympy.expand(self._f_expr)
 
-    func.factor = factor
-    func.faktoriser = factor
+    def zeros(self):
+        equation = " ".join([str(self._f_expr), "=", "0"])
+        return solve(equation)
 
-    def expand():
-        return sympy.expand(f_expr)
+    def integral(self, a=None, b=None):
+        x = sympy.sympify("x")
+        if a is not None and b is None:
+            return sympy.integrate(self._f_expr, (x, a, x))
+        elif a is None and b is not None:
+            return sympy.integrate(self._f_expr, (x, x, b))
+        elif a is not None and b is not None:
+            return sympy.integrate(self._f_expr, (x, a, b))
+        else:
+            return sympy.integrate(self._f_expr, x)
 
-    func.expand = expand
-    func.utvid = expand
-
-    def plot(domain=domain):
-        numpy_func = sympy.lambdify("x", f_expr, "numpy")
+    def graph(self, domain=None):
+        numpy_func = sympy.lambdify("x", self._f_expr, "numpy")
         if domain is not None:
             xmin, xmax = domain
             x_vals = numpy.linspace(xmin, xmax, 1024)
@@ -78,15 +86,13 @@ def function(f, domain=None):
         )
         plotmath.show()
 
-    func.graf = plot
-    func.graph = plot
-
-    return func
+    def __str__(self):
+        return str(self._f_expr)
 
 
-def Function(f, domain=None):
+def Function(f):
     """Alternative way to write `function`"""
-    return function(f, domain)
+    return function(f)
 
 
 def derivative(expr, var="x"):

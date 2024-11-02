@@ -7,10 +7,10 @@ from .equation import solve
 
 
 def løs(*likninger, pprint=True):
-    """Løser én eller flere likninger, eller én eller flere ulikheter.
+    """Løser én eller flere likninger (et likningssystem), eller én ulikhet.
 
     Args:
-        *likninger (str): Et variabel antall likninger eller ulikheter separert med komma som representerer likningene eller ulikhetene.
+        *likninger (str): Et variabelt antall likninger eller ulikheter separert med komma som representerer likningene eller ulikheten.
         pprint (bool): Hvis `True` gir en matematisk tekststreng-representasjon av løsningen. Standardverdi: `True`.
 
     Returns:
@@ -26,6 +26,14 @@ def løs(*likninger, pprint=True):
         >>> f = funksjon("a * x**2 + b*x + c")
         >>> løs("f(1) = 2", "f(-1) = 3", "f(3) = 4")
         'a = 3/8 ∧ b = -1/2 ∧ c = 17/8'
+
+        >>> f = funksjon("x**2 - x - 2")
+        >>> løs("f(x) = 0")
+        'x = -1    ∨    x = 2'
+        >>> løs("f(x) > 0")
+        '( (x < -1))  ∨  ((2 < x) )'
+        >>> løs("f(x) <= 0")
+        '(-1 <= x)  ∧  (x <= 2)'
 
     """
     løsning = solve(*likninger, pprint=pprint)
