@@ -126,10 +126,15 @@ def Solve(*equations, pprint=True):
 def _solve_inequality(expr):
     solution = sympy.solve(expr)
     solution = str(solution)
+    if solution == "False":
+        return "No solution"
+
+    solution = solution.replace("(-oo < x) & (x < oo)", "x ∈ ℝ")
+
     solution = solution.replace("(-oo < x) &", "")
     solution = solution.replace("& (x < oo)", "")
-    solution = solution.replace("(", "")
-    solution = solution.replace(")", "")
+    # solution = solution.replace("(", "")
+    # solution = solution.replace(")", "")
     solution = solution.replace("|", " ∨ ").replace("&", " ∧ ")
 
     return solution
