@@ -56,6 +56,15 @@ class function:
         return solve(equation)
 
     def integral(self, a=None, b=None):
+        if a == "inf":
+            a = sympy.oo
+        elif a == "-inf":
+            a = -sympy.oo
+        if b == "inf":
+            b = sympy.oo
+        elif b == "-inf":
+            b = -sympy.oo
+
         x = sympy.sympify("x")
         if a is not None and b is None:
             return sympy.integrate(self._f_expr, (x, a, x))
