@@ -1,6 +1,4 @@
-import sympy
-import plotmath
-import numpy
+# import sympy
 
 from .equation import solve
 
@@ -34,21 +32,29 @@ class function:
     """
 
     def __init__(self, f_expr):
+        import sympy
+
         self._f_expr = sympy.sympify(f_expr)
 
     def __call__(self, x):
         return self._f_expr.subs("x", x)
 
     def derivative(self, x=None, order=1):
+        import sympy
+
         if x is not None:
             return sympy.diff(self._f_expr, "x", order).subs("x", x)
         else:
             return sympy.diff(self._f_expr, "x", order)
 
     def factor(self):
+        import sympy
+
         return sympy.factor(self._f_expr)
 
     def expand(self):
+        import sympy
+
         return sympy.expand(self._f_expr)
 
     def zeros(self):
@@ -56,6 +62,8 @@ class function:
         return solve(equation)
 
     def integral(self, a=None, b=None):
+        import sympy
+
         if a == "inf":
             a = sympy.oo
         elif a == "-inf":
@@ -76,6 +84,10 @@ class function:
             return sympy.integrate(self._f_expr, x)
 
     def graph(self, domain=None):
+        import plotmath
+        import numpy
+        import sympy
+
         numpy_func = sympy.lambdify("x", self._f_expr, "numpy")
         if domain is not None:
             xmin, xmax = domain
@@ -114,5 +126,7 @@ def derivative(expr, var="x"):
         sympy.Expr: the derivative of the algebraic expression
 
     """
+    import sympy
+
     expr = sympy.sympify(expr)
     return sympy.diff(expr, sympy.symbols(var))

@@ -1,7 +1,3 @@
-import sympy
-import plotmath
-import numpy
-
 from .function import function, derivative
 
 

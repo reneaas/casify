@@ -1,10 +1,12 @@
-import sympy
-import re
-import sys
+# import sympy
+# import sys
+# import re
 
 
 def _get_func(expr):
     """ """
+    import re
+
     match = re.match(r"(\w+)\((-?\w+|-?\d+)\)", expr.strip())
     if match:
         func_name, arg = match.groups()
@@ -16,12 +18,16 @@ def _get_func(expr):
 def _handle_expression(expr):
     func_name, arg = _get_func(expr)
     if func_name:
+        import sys
+
         main_module = sys.modules["__main__"]
         main_globals = main_module.__dict__
         func = main_globals.get(func_name)
 
         return func(arg)
     else:
+        import sympy
+
         return sympy.sympify(expr)
 
 
@@ -46,6 +52,8 @@ def solve(*equations, pprint=True):
         'a = 3/8 ∧ b = -1/2 ∧ c = 17/8'
 
     """
+    import sympy
+
     eqs = []
     # Parse the equations
     for eq in equations:
@@ -124,6 +132,8 @@ def Solve(*equations, pprint=True):
 
 
 def _solve_inequality(expr):
+    import sympy
+
     solution = sympy.solve(expr)
     solution = str(solution)
     if solution == "False":

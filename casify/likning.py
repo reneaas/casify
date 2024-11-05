@@ -1,8 +1,3 @@
-import sympy
-import re
-import sys
-
-
 from .equation import solve
 
 

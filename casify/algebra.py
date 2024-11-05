@@ -1,4 +1,4 @@
-import sympy
+# import sympy
 
 
 def factor(expr):
@@ -10,6 +10,8 @@ def factor(expr):
     Returns:
         sympy.Expr: factorized expression
     """
+    import sympy
+
     expr = sympy.sympify(expr)
     return sympy.factor(expr)
 
@@ -24,6 +26,8 @@ def expand(expr):
         sympy.Expr: expanded algebraic expression
 
     """
+    import sympy
+
     expr = sympy.sympify(expr)
     return sympy.expand(expr)
 
