@@ -31,7 +31,7 @@ def _handle_expression(expr):
         return sympy.sympify(expr)
 
 
-def solve(*equations, pprint=True):
+def solve(*equations, variables=None, pprint=True):
     """Solves an equation or a set of equations or inequalities.
 
     Args:
@@ -91,7 +91,10 @@ def solve(*equations, pprint=True):
             rhs = _handle_expression(rhs)
             eqs.append(sympy.Eq(lhs, rhs))
 
-    solutions = sympy.solve(eqs)
+    if variables:
+        solutions = sympy.solve(eqs, variables, dict=True)
+    else:
+        solutions = sympy.solve(eqs, dict=True)
 
     # Remove complex solutions from the solution set.
     real_solutions = []
@@ -126,15 +129,19 @@ def solve(*equations, pprint=True):
         return real_solutions
 
 
-def Solve(*equations, pprint=True):
+def Solve(*equations, variables=None, pprint=True):
     """Alternative way to write `solve`."""
-    return solve(*equations, pprint=pprint)
+    return solve(*equations, variables=variables, pprint=pprint)
 
 
-def _solve_inequality(expr):
+def _solve_inequality(expr, variables=None):
     import sympy
 
-    solution = sympy.solve(expr)
+    if variables:
+        solution = sympy.solve(expr, variables, dict=True)
+    else:
+        solution = sympy.solve(expr, dict=True)
+
     solution = str(solution)
     if solution == "False":
         return "No solution"
