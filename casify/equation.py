@@ -1,10 +1,8 @@
 # import sympy
 # import sys
-# import re
 
 
 def _get_func(expr):
-    """ """
     import re
 
     match = re.match(r"(\w+)\((-?\w+|-?\d+)\)", expr.strip())
@@ -16,15 +14,30 @@ def _get_func(expr):
 
 
 def _handle_expression(expr):
+    known_functions = [
+        "cos",
+        "sin",
+        "tan",
+        "exp",
+        "acos",
+        "asin",
+        "atan",
+    ]
+
     func_name, arg = _get_func(expr)
     if func_name:
-        import sys
+        if func_name in known_functions:
+            import sympy
 
-        main_module = sys.modules["__main__"]
-        main_globals = main_module.__dict__
-        func = main_globals.get(func_name)
+            return sympy.sympify(expr)
+        else:
+            import sys
 
-        return func(arg)
+            main_module = sys.modules["__main__"]
+            main_globals = main_module.__dict__
+            func = main_globals.get(func_name)
+
+            return func(arg)
     else:
         import sympy
 
@@ -89,6 +102,7 @@ def solve(*equations, variables=None, pprint=True):
 
             lhs = _handle_expression(lhs)
             rhs = _handle_expression(rhs)
+
             eqs.append(sympy.Eq(lhs, rhs))
 
     if variables:
@@ -134,8 +148,32 @@ def Solve(*equations, variables=None, pprint=True):
     return solve(*equations, variables=variables, pprint=pprint)
 
 
+def _simplify_expression(expression):
+    """
+    Simplify logical expressions of the form:
+    ((-oo < x) ∧ (x <= ...)) ∨ ((x < oo) ∧ (... <= x))
+    or
+    ((-oo < x) ∧ (... < x)) ∨ ((x < oo) ∧ (x < ...))
+    """
+    import re
+
+    # Define a generic pattern
+    pattern = r"""
+        \(\(-oo < ([a-zA-Z0-9_]+)\)\s+∧\s+\(\1\s*([<>]=?)\s*(.*?)\)\)\s+∨\s+  # First part (-oo < x and x <= ...)
+        \(\(\1 < oo\)\s+∧\s+\((.*?)\s*\2\s*\1\)\)                            # Second part (x < oo and ... <= x)
+    """
+
+    # Replacement for the simplified version
+    replacement = r"\3 \2 \1  ∨  \4 \2 \1"
+
+    # Perform the substitution with verbose regex for readability
+    simplified = re.sub(pattern, replacement, expression, flags=re.VERBOSE)
+    return simplified
+
+
 def _solve_inequality(expr, variables=None):
     import sympy
+    import re
 
     if variables:
         solution = sympy.solve(expr, variables, dict=True)
@@ -148,10 +186,45 @@ def _solve_inequality(expr, variables=None):
 
     solution = solution.replace("(-oo < x) & (x < oo)", "x ∈ ℝ")
 
-    solution = solution.replace("(-oo < x) &", "")
-    solution = solution.replace("& (x < oo)", "")
+    expression = solution.split("|")
+    new_expression = []
+    for i, expr in enumerate(expression):
+        tmp = []
+        expr = expr.split("&")
+        for j, s in enumerate(expr):
+            if (
+                "(-oo < x)" in s
+                or "(x < oo)" in s
+                or "(-oo <= x)" in s
+                or "(x <= oo)" in s
+            ):
+                pass
+            elif "sqrt" not in s:
+                s = s.replace(")", "")
+                s = s.replace("(", "")
+                tmp.append(s)
+            else:
+                s = s[2:-2]
+                while (
+                    s[-1] == s[-2]
+                ):  # remove unecessary parenthesis "))". Only leave single parenthesis ")"
+                    s = s[:-1]
+                tmp.append(s)
+
+        tmp = " ∧ ".join(tmp)
+
+        new_expression.append(tmp)
+
+    new_expression = " ∨ ".join(new_expression)
+    return new_expression
+    # solution = solution.replace("(-oo < x))", "")
+
+    # solution = solution.replace("((x < oo)", "")
+    # solution = solution.replace("(-oo < x)", "")
+    # solution = solution.replace("(x < oo)", "")
     # solution = solution.replace("(", "")
     # solution = solution.replace(")", "")
-    solution = solution.replace("|", " ∨ ").replace("&", " ∧ ")
+    # solution = solution.replace("|", " ∨ ").replace("&", " ∧ ")
+    # solution = _simplify_expression(solution)
 
-    return solution
+    # return solution

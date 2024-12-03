@@ -31,6 +31,17 @@ class function:
         >>> g.graph() # displays the graph of the function
     """
 
+    known_functions = [
+        "cos",
+        "sin",
+        "tan",
+        "exp",
+        "log",
+        "ln",
+        "log2",
+        "log10",
+    ]
+
     def __init__(self, f_expr):
         import sympy
 
