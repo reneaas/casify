@@ -211,11 +211,11 @@ def _solve_inequality(expr, variables=None):
                     s = s[:-1]
                 tmp.append(s)
 
-        tmp = " ∧ ".join(tmp)
+        tmp = "  ∧  ".join(tmp)
 
         new_expression.append(tmp)
 
-    new_expression = " ∨ ".join(new_expression)
+    new_expression = "    ∨    ".join(new_expression)
     return new_expression
     # solution = solution.replace("(-oo < x))", "")
 
