@@ -22,6 +22,9 @@ def _handle_expression(expr):
         "acos",
         "asin",
         "atan",
+        "log",
+        "log2",
+        "log10",
     ]
 
     func_name, arg = _get_func(expr)
@@ -148,29 +151,6 @@ def Solve(*equations, variables=None, pprint=True):
     return solve(*equations, variables=variables, pprint=pprint)
 
 
-def _simplify_expression(expression):
-    """
-    Simplify logical expressions of the form:
-    ((-oo < x) ∧ (x <= ...)) ∨ ((x < oo) ∧ (... <= x))
-    or
-    ((-oo < x) ∧ (... < x)) ∨ ((x < oo) ∧ (x < ...))
-    """
-    import re
-
-    # Define a generic pattern
-    pattern = r"""
-        \(\(-oo < ([a-zA-Z0-9_]+)\)\s+∧\s+\(\1\s*([<>]=?)\s*(.*?)\)\)\s+∨\s+  # First part (-oo < x and x <= ...)
-        \(\(\1 < oo\)\s+∧\s+\((.*?)\s*\2\s*\1\)\)                            # Second part (x < oo and ... <= x)
-    """
-
-    # Replacement for the simplified version
-    replacement = r"\3 \2 \1  ∨  \4 \2 \1"
-
-    # Perform the substitution with verbose regex for readability
-    simplified = re.sub(pattern, replacement, expression, flags=re.VERBOSE)
-    return simplified
-
-
 def _solve_inequality(expr, variables=None):
     import sympy
     import re
@@ -217,14 +197,3 @@ def _solve_inequality(expr, variables=None):
 
     new_expression = "    ∨    ".join(new_expression)
     return new_expression
-    # solution = solution.replace("(-oo < x))", "")
-
-    # solution = solution.replace("((x < oo)", "")
-    # solution = solution.replace("(-oo < x)", "")
-    # solution = solution.replace("(x < oo)", "")
-    # solution = solution.replace("(", "")
-    # solution = solution.replace(")", "")
-    # solution = solution.replace("|", " ∨ ").replace("&", " ∧ ")
-    # solution = _simplify_expression(solution)
-
-    # return solution
