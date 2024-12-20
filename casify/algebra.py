@@ -78,8 +78,10 @@ def div(p, q):
 
     if r == 0:
         return str(k)
+    elif sympy.degree(r) == 0:
+        return f"{k} + {r}/({q})"
     else:
-        return f"{k} + {r}/{q}"
+        return f"{k} + ({r})/({q})"
 
 
 def Div(p, q):
