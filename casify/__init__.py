@@ -2,7 +2,18 @@ from .equation import solve, Solve
 from .likning import løs, Løs
 from .function import function, Function
 from .funksjon import funksjon, Funksjon
-from .algebra import expand, factor, utvid, Utvid, faktoriser, Faktoriser
+from .algebra import (
+    expand,
+    factor,
+    utvid,
+    Utvid,
+    faktoriser,
+    Faktoriser,
+    div,
+    Div,
+    polynomdivisjon,
+    Polynomdivisjon,
+)
 
 __all__ = [
     "solve",
