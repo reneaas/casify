@@ -30,4 +30,8 @@ __all__ = [
     "Utvid",
     "faktoriser",
     "Faktoriser",
+    "div",
+    "Div",
+    "polynomdivisjon",
+    "Polynomdivisjon",
 ]
