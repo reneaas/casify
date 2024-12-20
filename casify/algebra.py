@@ -66,3 +66,29 @@ def Faktoriser(uttrykk):
 def Utvid(uttrykk):
     """Alternativ skrivemåte for `utvid`."""
     return expand(uttrykk)
+
+
+def div(p, q):
+    import sympy
+
+    p = sympy.sympify(p)
+    q = sympy.sympify(q)
+
+    k, r = sympy.div(p, q)
+
+    if r == 0:
+        return str(k)
+    else:
+        return f"{k} + {r}/{q}"
+
+
+def Div(p, q):
+    return div(p, q)
+
+
+def polynomdivisjon(p, q):
+    return div(p, q)
+
+
+def Polynomdivisjon(p, q):
+    return div(p, q)
