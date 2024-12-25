@@ -72,6 +72,11 @@ class function:
         equation = " ".join([str(self._f_expr), "=", "0"])
         return solve(equation)
 
+    def extrema(self):
+        derivative = self.derivative()
+        equation = " ".join([str(derivative), "=", "0"])
+        return solve(equation)
+
     def integral(self, a=None, b=None):
         import sympy
 

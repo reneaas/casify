@@ -46,6 +46,9 @@ class funksjon(function):
     def nullpunkter(self):
         return self.zeros()
 
+    def ekstremalpunkter(self):
+        return self.extrema()
+
     def integral(self, a=None, b=None):
         return super().integral(a, b)
 
