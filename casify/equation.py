@@ -120,10 +120,14 @@ def solve(*equations, variables=None, pprint=True):
             key: solutions.get(key) for key in solutions if solutions.get(key).is_real
         }
         real_solutions = [real_solutions]
+        real_solutions = [sol.get(key) for key in real_solutions if not "I" in str(sol)]
+
     else:
         for sol in solutions:
-            if not False in [sol.get(key).is_real for key in sol]:
+            if not False in [not "I" in str(sol.get(key)) for key in sol]:
                 real_solutions.append(sol)
+            # if not False in [sol.get(key).is_real for key in sol]:
+            # real_solutions.append(sol)
 
     if real_solutions == [] or real_solutions == {}:
         return "No solution"
