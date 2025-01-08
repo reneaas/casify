@@ -15,6 +15,11 @@ from .algebra import (
     Polynomdivisjon,
 )
 
+from .vector import vector, Vector2d
+
+from .vektor import vektor, Vektor2d, vinkel
+
+
 __all__ = [
     "solve",
     "løs",
@@ -34,4 +39,9 @@ __all__ = [
     "Div",
     "polynomdivisjon",
     "Polynomdivisjon",
+    "vector",
+    "Vector2d",
+    "vektor",
+    "Vektor2d",
+    "vinkel",
 ]
