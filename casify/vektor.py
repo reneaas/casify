@@ -35,7 +35,7 @@ class Vektor2d(Vector2d):
 
     def __sub__(self, other):
         new_r = self.r - other.r
-        return Vector2d(*new_r)
+        return Vektor2d(*new_r)
 
     def __rsub__(self, other):
         return -self.__sub__(self, other)
