@@ -5,6 +5,31 @@ def vector(*args):
         return NotImplemented
 
 
+class Point:
+    def __init__(self, x, y):
+        import numpy as np
+
+        self._x = x
+        self._y = y
+
+        self._r = np.array([x, y])
+
+    @property
+    def x(self):
+        return self._x
+
+    @property
+    def y(self):
+        return self._y
+
+    @property
+    def r(self):
+        return self._r
+
+    def __repr__(self):
+        return f"({self.x}, {self.y})"
+
+
 class Vector2d:
     def __init__(self, x, y):
         import numpy as np

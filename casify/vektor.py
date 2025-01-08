@@ -1,4 +1,4 @@
-from vector import Vector2d, vector
+from .vector import Vector2d
 
 
 def vektor(*args):
