@@ -25,3 +25,37 @@ class Vektor2d(Vector2d):
 
     def vinkel(self, other):
         return self.angle(other)
+
+    def __add__(self, other):
+        new_r = self.r + other.r
+        return Vektor2d(*new_r)
+
+    def __radd__(self, other):
+        return self.__add__(self, other)
+
+    def __sub__(self, other):
+        new_r = self.r - other.r
+        return Vector2d(*new_r)
+
+    def __rsub__(self, other):
+        return -self.__sub__(self, other)
+
+    def __mul__(self, other):
+        import numpy as np
+
+        if isinstance(other, Vektor2d):
+            return np.dot(self.r, other.r)
+        elif isinstance(other, (int, float)):
+            new_r = self.r * other
+            return Vektor2d(*new_r)
+        else:
+            raise TypeError(
+                "Vektorer kan bare ganges med andre vektorer eller skalarer."
+            )
+
+    def __rmul__(self, other):
+        return self * other
+
+    def __neg__(self):
+        new_r = -self.r
+        return Vektor2d(*new_r)
