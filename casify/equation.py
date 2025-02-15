@@ -177,10 +177,10 @@ def _solve_inequality(expr, variables=None):
         expr = expr.split("&")
         for j, s in enumerate(expr):
             if "Eq" in s:
-                s.replace("Eq(", "")
-                s.replace(")", "")
+                s = s.replace("Eq(", "")
+                s = s.replace(")", "")
                 s = s.split(",")
-                s = " = ".join(s)
+                s = " =".join(s)
             elif (
                 "(-oo < x)" in s
                 or "(x < oo)" in s
