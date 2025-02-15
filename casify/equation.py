@@ -176,7 +176,12 @@ def _solve_inequality(expr, variables=None):
         tmp = []
         expr = expr.split("&")
         for j, s in enumerate(expr):
-            if (
+            if "Eq" in s:
+                s.replace("Eq(", "")
+                s.replace(")", "")
+                s = s.split(",")
+                s = " = ".join(s)
+            elif (
                 "(-oo < x)" in s
                 or "(x < oo)" in s
                 or "(-oo <= x)" in s

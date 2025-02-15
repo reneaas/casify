@@ -120,6 +120,7 @@ class function:
             xmax=xmax,
             ymin=ymin,
             ymax=ymax,
+            ticks=False,
         )
         plotmath.show()
 
