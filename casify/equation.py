@@ -170,7 +170,7 @@ def _solve_inequality(expr, variables=None):
 
     solution = solution.replace("(-oo < x) & (x < oo)", "x ∈ ℝ")
 
-    expression = solution.split("|")
+    # expression = solution.split("|")
     expression = sympy.pretty(expression)
 
     return expression
