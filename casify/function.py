@@ -99,7 +99,7 @@ class function:
         else:
             return sympy.integrate(self._f_expr, x)
 
-    def graph(self, domain=None):
+    def graph(self, domain=None, xstep=1, ystep=1):
         import plotmath
         import numpy
         import sympy
@@ -113,7 +113,7 @@ class function:
         else:
             xmin, xmax = (-6, 6)
             ymin, ymax = (-6, 6)
-        plotmath.plot(
+        fig, ax = plotmath.plot(
             functions=[numpy_func],
             fn_labels=None,
             xmin=xmin,
@@ -122,6 +122,20 @@ class function:
             ymax=ymax,
             ticks=False,
         )
+
+        xticks = [i for i in range(xmin - 1, xmax, xstep)]
+        if 0 in xticks:
+            xticks.remove(0)
+        xticklabels = [f"${i}$" for i in xticks]
+        ax.set_xticks(xticks)
+        ax.set_xticklabels(xticklabels, fontsize=16)
+        yticks = [i for i in range(ymin - 1, ymax, ystep)]
+        if 0 in yticks:
+            yticks.remove(0)
+        yticklabels = [f"${i}$" for i in yticks]
+        ax.set_yticks(yticks)
+        ax.set_yticklabels(yticklabels, fontsize=16)
+
         plotmath.show()
 
     def __str__(self):
