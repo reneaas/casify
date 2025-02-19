@@ -112,7 +112,7 @@ class Function:
             xmin, xmax = domain
             x_vals = numpy.linspace(xmin, xmax, 1024)
             ymin = int(numpy.min(numpy_func(x_vals)))
-            ymin = ymin if ymin >= 0 else 0
+            ymin = ymin if ymin > 0 else 0
             ymax = int(numpy.max(numpy_func(x_vals)))
             if ymin > ymax:
                 ymin, ymax = ymax, ymin
