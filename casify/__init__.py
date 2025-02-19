@@ -14,6 +14,8 @@ from .algebra import (
     polynomdivisjon,
     Polynomdivisjon,
 )
+from .regression import make_model
+from .regresjon import lag_modell
 
 from .vector import vector, Vector2d
 
@@ -44,4 +46,6 @@ __all__ = [
     "vektor",
     "Vektor2d",
     "vinkel",
+    "lag_modell",
+    "make_model",
 ]
