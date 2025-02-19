@@ -15,6 +15,61 @@ class RegresjonModell(Funksjon):
 
         return sympy.pretty(self._f_expr)
 
+    def graf(
+        self,
+        definisjonsmengde=None,
+        xnavn=None,
+        ynavn=None,
+        xstep=1,
+        ystep=1,
+        plot_data=True,
+    ):
+        import plotmath
+        import numpy
+        import sympy
+
+        # numpy_func = sympy.lambdify("x", self._f_expr, "numpy")
+        def numpy_func(x):
+            return numpy.array([self(i) for i in x])
+
+        if definisjonsmengde is not None:
+            xmin, xmax = definisjonsmengde
+            x_vals = numpy.linspace(xmin, xmax, 1024)
+            ymin = int(numpy.min(numpy_func(x_vals)))
+            ymin = ymin if ymin < 0 else 0
+            ymax = int(numpy.max(numpy_func(x_vals)))
+            if ymin > ymax:
+                ymin, ymax = ymax, ymin
+
+        else:
+            xmin, xmax = (-6, 6)
+            ymin, ymax = (-6, 6)
+
+        fn_label = "y = " + sympy.latex(self._f_expr, mul_symbol="dot")
+        fn_label = f"${fn_label}$"
+        fig, ax = plotmath.plot(
+            functions=[numpy_func],
+            fn_labels=[fn_label],
+            xmin=xmin,
+            xmax=xmax,
+            ymin=ymin,
+            ymax=ymax,
+            ticks=True,
+            xstep=xstep,
+            ystep=ystep,
+        )
+
+        if plot_data:
+            ax.plot(self._xdata, self._ydata, "ko", markersize=8, alpha=0.7)
+
+        if xnavn is not None:
+            ax.set_xlabel(xnavn, fontsize=16, rotation=0, loc="right")
+
+        if ynavn is not None:
+            ax.set_ylabel(ynavn, fontsize=16, rotation=90, loc="top")
+
+        plotmath.show()
+
 
 def lag_modell(
     modell,
