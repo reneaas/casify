@@ -142,9 +142,6 @@ class Function:
             ystep=ystep,
         )
 
-        if xdata is not None and ydata is not None:
-            ax.plot(xdata, ydata, "ko", markersize=8, alpha=0.7)
-
         if xlabel is not None:
             ax.set_xlabel(xlabel, fontsize=16, rotation=0, loc="right")
 
