@@ -16,6 +16,11 @@ class RegressionModel(function):
 
         return sympy.pretty(self._f_expr)
 
+    def __str__(self):
+        import sympy
+
+        return sympy.pretty(self._f_expr)
+
 
 def make_model(
     model,
