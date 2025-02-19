@@ -112,8 +112,8 @@ class Function:
             xmin, xmax = domain
             x_vals = numpy.linspace(xmin, xmax, 1024)
             codomain = (
-                int(numpy.min(numpy_func(x_vals))) - 1,
-                int(numpy.max(numpy_func(x_vals))) + 1,
+                int(numpy.min(numpy_func(x_vals))),
+                int(numpy.max(numpy_func(x_vals))),
             )
             ymin, ymax = codomain
         else:
