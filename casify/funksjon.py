@@ -1,7 +1,7 @@
-from .function import function, derivative
+from .function import Function, derivative
 
 
-class funksjon(function):
+class Funksjon(Function):
     """A klasse som representerer en matematisk funksjon f.
 
     Args:
@@ -62,9 +62,9 @@ class funksjon(function):
         )
 
 
-def Funksjon(f):
+def funksjon(f):
     """Alternativ skrivemåte for `funksjon`."""
-    return funksjon(f)
+    return Funksjon(f)
 
 
 def derivert(uttrykk, var="x"):

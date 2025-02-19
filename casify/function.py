@@ -3,7 +3,7 @@
 from .equation import solve
 
 
-class function:
+class Function:
     """A class representing a mathematical function.
 
     Args:
@@ -18,14 +18,14 @@ class function:
 
     Examples:
         >>> from casify import *
-        >>> f = function("x**2 + 2*x + 1")
+        >>> f = Function("x**2 + 2*x + 1")
         >>> f(2)
         9
         >>> f.derivative()
         2*x + 2
         >>> f.factor()
         (x + 1)**2
-        >>> g = function("(x + 1) * (x - 3)")
+        >>> g = Function("(x + 1) * (x - 3)")
         >>> g.expand()
         x**2 - 2*x - 3
         >>> g.graph() # displays the graph of the function
@@ -112,8 +112,8 @@ class function:
             xmin, xmax = domain
             x_vals = numpy.linspace(xmin, xmax, 1024)
             codomain = (
-                int(numpy.min(numpy_func(x_vals))),
-                int(numpy.max(numpy_func(x_vals))),
+                int(numpy.min(numpy_func(x_vals))) - 1,
+                int(numpy.max(numpy_func(x_vals))) + 1,
             )
             ymin, ymax = codomain
         else:
@@ -126,7 +126,7 @@ class function:
             xmax=xmax,
             ymin=ymin,
             ymax=ymax,
-            ticks=False,
+            ticks=True,
             domain=domain,
             xstep=xstep,
             ystep=ystep,
@@ -157,9 +157,9 @@ class function:
         return str(self._f_expr)
 
 
-def Function(f):
+def function(f):
     """Alternative way to write `function`"""
-    return function(f)
+    return Function(f)
 
 
 def derivative(expr, var="x"):
