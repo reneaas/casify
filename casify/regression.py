@@ -40,6 +40,5 @@ def make_model(
     )
 
     f_expr = f_expr.subs({var: round(val, 2) for var, val in zip(params, popt)})
-    f = lambda x: model(x, *popt)
 
-    return RegressionModel(f_expr, f, xdata, ydata)
+    return RegressionModel(f_expr, xdata, ydata)
