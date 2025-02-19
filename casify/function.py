@@ -104,11 +104,17 @@ class function:
         import numpy
         import sympy
 
-        numpy_func = sympy.lambdify("x", self._f_expr, "numpy")
+        # numpy_func = sympy.lambdify("x", self._f_expr, "numpy")
+        def numpy_func(x):
+            return numpy.array([self(i) for i in x])
+
         if domain is not None:
             xmin, xmax = domain
             x_vals = numpy.linspace(xmin, xmax, 1024)
-            codomain = (numpy.min(numpy_func(x_vals)), numpy.max(numpy_func(x_vals)))
+            codomain = (
+                int(numpy.min(numpy_func(x_vals))),
+                int(numpy.max(numpy_func(x_vals))),
+            )
             ymin, ymax = codomain
         else:
             xmin, xmax = (-6, 6)
