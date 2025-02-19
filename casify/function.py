@@ -116,6 +116,8 @@ class Function:
             ymax = int(numpy.max(numpy_func(x_vals)))
             if ymin > ymax:
                 ymin, ymax = ymax, ymin
+
+            print(f"{ymin = } ; {ymax = }")
         else:
             xmin, xmax = (-6, 6)
             ymin, ymax = (-6, 6)
