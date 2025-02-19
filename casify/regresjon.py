@@ -16,7 +16,7 @@ class RegresjonModell(funksjon):
         return sympy.pretty(self._f_expr)
 
 
-def lag_model(
+def lag_modell(
     model,
     xdata,
     ydata,
@@ -39,6 +39,6 @@ def lag_model(
         ydata=ydata,
     )
 
-    f_expr = f_expr.subs({var: round(val, 2) for var, val in zip(params, popt)})
+    f_expr = f_expr.subs({var: round(val, 3) for var, val in zip(params, popt)})
 
     return RegresjonModell(f_expr, xdata, ydata)
