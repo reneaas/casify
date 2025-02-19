@@ -123,6 +123,7 @@ class Function:
             ymin, ymax = (-6, 6)
 
         fn_label = "y = " + sympy.latex(self._f_expr)
+        print(fn_label)
         fn_label = f"${fn_label}$"
         fig, ax = plotmath.plot(
             functions=[numpy_func],
