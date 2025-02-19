@@ -17,24 +17,24 @@ class RegresjonModell(funksjon):
 
 
 def lag_modell(
-    model,
+    modell,
     xdata,
     ydata,
 ):
     import sympy
     from scipy.optimize import curve_fit
 
-    f_expr = sympy.sympify(model)
+    f_expr = sympy.sympify(modell)
     vars = f_expr.free_symbols
     vars = [str(var) for var in vars]
     vars = sorted(vars)
     vars.remove("x")
     params = vars[:]
     vars = ["x"] + vars
-    model = sympy.lambdify(vars, f_expr)
+    modell = sympy.lambdify(vars, f_expr)
 
     popt, _ = curve_fit(
-        f=model,
+        f=modell,
         xdata=xdata,
         ydata=ydata,
     )

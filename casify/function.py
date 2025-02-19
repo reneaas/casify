@@ -99,7 +99,7 @@ class function:
         else:
             return sympy.integrate(self._f_expr, x)
 
-    def graph(self, domain=None, xstep=1, ystep=1):
+    def graph(self, domain=None, xlabel=None, ylabel=None, xstep=1, ystep=1):
         import plotmath
         import numpy
         import sympy
@@ -109,7 +109,7 @@ class function:
             xmin, xmax = domain
             x_vals = numpy.linspace(xmin, xmax, 1024)
             codomain = (numpy.min(numpy_func(x_vals)), numpy.max(numpy_func(x_vals)))
-            ymin, ymax = domain
+            ymin, ymax = codomain
         else:
             xmin, xmax = (-6, 6)
             ymin, ymax = (-6, 6)
@@ -122,6 +122,12 @@ class function:
             ymax=ymax,
             ticks=False,
         )
+
+        if xlabel is not None:
+            ax.set_xlabel(xlabel, fontsize=16)
+
+        if ylabel is not None:
+            ax.set_ylabel(ylabel, fontsize=16)
 
         xticks = [i for i in range(xmin - 1, xmax, xstep)]
         if 0 in xticks:

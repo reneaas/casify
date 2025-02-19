@@ -52,8 +52,14 @@ class funksjon(function):
     def integral(self, a=None, b=None):
         return super().integral(a, b)
 
-    def graf(self, definisjonsmengde=None, xstep=1, ystep=1):
-        return self.graph(definisjonsmengde, xstep, ystep)
+    def graf(self, definisjonsmengde=None, xnavn=None, ynavn=None, xstep=1, ystep=1):
+        return self.graph(
+            domain=definisjonsmengde,
+            xstep=xstep,
+            ystep=ystep,
+            xlabel=xnavn,
+            ylabel=ynavn,
+        )
 
 
 def Funksjon(f):
