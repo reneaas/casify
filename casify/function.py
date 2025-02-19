@@ -111,11 +111,11 @@ class Function:
         if domain is not None:
             xmin, xmax = domain
             x_vals = numpy.linspace(xmin, xmax, 1024)
-            codomain = (
-                int(numpy.min(numpy_func(x_vals))),
-                int(numpy.max(numpy_func(x_vals))),
-            )
-            ymin, ymax = codomain
+            ymin = int(numpy.min(numpy_func(x_vals)))
+            ymin = ymin if ymin >= 0 else 0
+            ymax = int(numpy.max(numpy_func(x_vals)))
+            if ymin > ymax:
+                ymin, ymax = ymax, ymin
         else:
             xmin, xmax = (-6, 6)
             ymin, ymax = (-6, 6)
