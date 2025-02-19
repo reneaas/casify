@@ -32,7 +32,7 @@ def make_model(
     vars.remove("x")
     params = vars[:]
     vars = ["x"] + vars
-    model = sympy.lambify(vars, f_expr)
+    model = sympy.lambdify(vars, f_expr)
 
     popt, _ = curve_fit(
         f=model,
