@@ -3,7 +3,7 @@ from .function import function
 
 class RegressionModel(function):
     def __init__(self, f_expr, model_fn, xdata, ydata):
-        self.super().__init__(f_expr)
+        super().__init__(f_expr)
         self._model_fn = model_fn
         self._xdata = xdata
         self._ydata = ydata
