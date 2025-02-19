@@ -138,10 +138,10 @@ class Function:
         )
 
         if xlabel is not None:
-            ax.set_xlabel(xlabel, fontsize=16, rotation=0)
+            ax.set_xlabel(xlabel, fontsize=16, rotation=0, loc="right")
 
         if ylabel is not None:
-            ax.set_ylabel(ylabel, fontsize=16, rotation=90)
+            ax.set_ylabel(ylabel, fontsize=16, rotation=90, loc="top")
 
         plotmath.show()
 
