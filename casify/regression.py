@@ -2,19 +2,13 @@ from .function import function
 
 
 class RegressionModel(function):
-    def __init__(self, f_expr, model_fn, xdata, ydata):
+    def __init__(self, f_expr, xdata, ydata):
         super().__init__(f_expr)
-        self._model_fn = model_fn
         self._xdata = xdata
         self._ydata = ydata
 
-    def __call__(self, x):
-        return self._model_fn(x)
-
     def __repr__(self):
-        import sympy
-
-        return sympy.pretty(self._f_expr)
+        return str(self._f_expr)
 
     def __str__(self):
         import sympy
