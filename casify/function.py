@@ -132,23 +132,10 @@ class Function:
         )
 
         if xlabel is not None:
-            ax.set_xlabel(xlabel, fontsize=16)
+            ax.set_xlabel(xlabel, fontsize=16, rotation=0)
 
         if ylabel is not None:
-            ax.set_ylabel(ylabel, fontsize=16)
-
-        # xticks = [i for i in range(xmin - 1, xmax, xstep)]
-        # if 0 in xticks:
-        #     xticks.remove(0)
-        # xticklabels = [f"${i}$" for i in xticks]
-        # ax.set_xticks(xticks)
-        # ax.set_xticklabels(xticklabels, fontsize=16)
-        # yticks = [i for i in range(ymin - 1, ymax, ystep)]
-        # if 0 in yticks:
-        #     yticks.remove(0)
-        # yticklabels = [f"${i}$" for i in yticks]
-        # ax.set_yticks(yticks)
-        # ax.set_yticklabels(yticklabels, fontsize=16)
+            ax.set_ylabel(ylabel, fontsize=16, rotation=90)
 
         plotmath.show()
 
