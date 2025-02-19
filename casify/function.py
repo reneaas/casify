@@ -117,13 +117,11 @@ class Function:
             if ymin > ymax:
                 ymin, ymax = ymax, ymin
 
-            print(f"{ymin = } ; {ymax = }")
         else:
             xmin, xmax = (-6, 6)
             ymin, ymax = (-6, 6)
 
         fn_label = "y = " + sympy.latex(self._f_expr, mul_symbol="dot")
-        print(fn_label)
         fn_label = f"${fn_label}$"
         fig, ax = plotmath.plot(
             functions=[numpy_func],
