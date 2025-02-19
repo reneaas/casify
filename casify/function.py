@@ -127,7 +127,6 @@ class Function:
             ymin=ymin,
             ymax=ymax,
             ticks=True,
-            domain=domain,
             xstep=xstep,
             ystep=ystep,
         )

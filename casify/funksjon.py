@@ -16,7 +16,7 @@ class Funksjon(Function):
 
     Eksempler:
         >>> from casify import *
-        >>> f = funksjon("x**2 + 2*x + 1")
+        >>> f = Funksjon("x**2 + 2*x + 1")
         >>> f(2)
         9
         >>> f.derivert()
@@ -25,7 +25,7 @@ class Funksjon(Function):
         10
         >>> f.faktoriser()
         (x + 1)**2
-        >>> g = funksjon("(x + 1) * (x - 3)")
+        >>> g = Funksjon("(x + 1) * (x - 3)")
         >>> g.utvid()
         x**2 - 2*x - 3
         >>> g.graf() # viser grafen til g.
