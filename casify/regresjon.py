@@ -1,7 +1,7 @@
-from .funksjon import funksjon
+from .funksjon import Funksjon
 
 
-class RegresjonModell(funksjon):
+class RegresjonModell(Funksjon):
     def __init__(self, f_expr, xdata, ydata):
         super().__init__(f_expr)
         self._xdata = xdata

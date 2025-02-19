@@ -1,7 +1,7 @@
-from .function import function
+from .function import Function
 
 
-class RegressionModel(function):
+class RegressionModel(Function):
     def __init__(self, f_expr, xdata, ydata):
         super().__init__(f_expr)
         self._xdata = xdata
