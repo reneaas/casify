@@ -26,9 +26,9 @@ def løs(*likninger, variabler=None, pprint=True):
         >>> løs("f(x) = 0")
         'x = -1    ∨    x = 2'
         >>> løs("f(x) > 0")
-        '( (x < -1))  ∨  ((2 < x) )'
+        '(-∞ < x ∧ x < -1) ∨ (2 < x ∧ x < ∞)'
         >>> løs("f(x) <= 0")
-        '(-1 <= x)  ∧  (x <= 2)'
+         '-1 ≤ x ∧ x ≤ 2'
 
     """
     løsning = solve(*likninger, variables=variabler, pprint=pprint)

@@ -121,9 +121,12 @@ class Function:
         else:
             xmin, xmax = (-6, 6)
             ymin, ymax = (-6, 6)
+
+        fn_label = "y = " + sympy.pretty(self._f_expr)
+        fn_label = f"${fn_label}$"
         fig, ax = plotmath.plot(
             functions=[numpy_func],
-            fn_labels=None,
+            fn_labels=[fn_label],
             xmin=xmin,
             xmax=xmax,
             ymin=ymin,
