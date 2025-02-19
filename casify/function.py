@@ -133,8 +133,8 @@ class Function:
             ystep=ystep,
         )
 
-        ax.ylim(ymin - ystep, ymax + ystep)
-        ax.xlim(xmin - xstep, xmax + xstep)
+        ax.set_ylim(ymin - ystep, ymax + ystep)
+        ax.set_xlim(xmin - xstep, xmax + xstep)
 
         if xlabel is not None:
             ax.set_xlabel(xlabel, fontsize=16, rotation=0)
