@@ -118,16 +118,22 @@ class Function:
         if domain is not None:
             xmin, xmax = domain
             if xmin != 0:
-                x_vals = numpy.linspace(xmin - xstep, xmax + xstep, 1024)
+                xmax = xmax + xstep
+                xmin = xmin - xstep
             else:
-                x_vals = numpy.linspace(xmin, xmax + xstep, 1024)
+                xmax = xmax + xstep
+
+            x_vals = numpy.linspace(xmin, xmax, 1024)
 
             ymin = int(numpy.min(numpy_func(x_vals)))
             ymin = ymin if ymin < 0 else 0
             if ymin != 0:
-                n = ymin % ystep
+                n = ymin % ystep + 1
                 ymin = int(ymin / abs(ystep)) * n * ystep
+
             ymax = int(numpy.max(numpy_func(x_vals)))
+            n = ymax % ystep + 1
+            ymax = int(ymax / abs(ystep)) * n * ystep
 
         else:
             xmin, xmax = (-6, 6)
