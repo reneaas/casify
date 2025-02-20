@@ -52,6 +52,8 @@ class RegresjonModell(Funksjon):
             n = ymax % ystep + 1
             ymax = int(ymax / abs(ymax)) * n * ystep
 
+            print(ymin, ymax)
+
         else:
             xmin, xmax = (-6, 6)
             ymin, ymax = (-6, 6)
