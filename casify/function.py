@@ -117,12 +117,17 @@ class Function:
 
         if domain is not None:
             xmin, xmax = domain
-            x_vals = numpy.linspace(xmin, xmax, 1024)
+            if xmin != 0:
+                x_vals = numpy.linspace(xmin - xstep, xmax + xstep, 1024)
+            else:
+                x_vals = numpy.linspace(xmin, xmax + xstep, 1024)
+
             ymin = int(numpy.min(numpy_func(x_vals)))
             ymin = ymin if ymin < 0 else 0
+            if ymin != 0:
+                n = ymin % ystep
+                ymin = int(ymin / abs(ystep)) * n * ystep
             ymax = int(numpy.max(numpy_func(x_vals)))
-            if ymin > ymax:
-                ymin, ymax = ymax, ymin
 
         else:
             xmin, xmax = (-6, 6)
