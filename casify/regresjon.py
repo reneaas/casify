@@ -49,6 +49,8 @@ class RegresjonModell(Funksjon):
 
             ymin = ymin if ymin < 0 else 0
 
+            print(f"{ymin = }")
+
             ymax = int(numpy.max(numpy_func(x_vals)))
             n = ymax // ystep + 1
             ymax = int(ymax / abs(ymax)) * n * ystep
