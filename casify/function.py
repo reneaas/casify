@@ -47,8 +47,6 @@ class Function:
         import sympy
 
         self._f_expr = sympy.sympify(f_expr)
-        if self._f_expr.is_rational_function() and not self._f_expr.is_polynomial():
-            return RationalFunction(f_expr)
 
     def __call__(self, x):
         return self._f_expr.subs("x", x)
