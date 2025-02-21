@@ -43,9 +43,9 @@ class RegresjonModell(Funksjon):
             x_vals = numpy.linspace(xmin, xmax, 1024)
 
             ymin = int(numpy.min(numpy_func(x_vals)))
-            if ymin != 0:
-                n = ymin // ystep + 1
-                ymin = int(ymin / abs(ymin)) * n * ystep
+
+            n = ymin // ystep + 1
+            ymin = int(ymin / abs(ymin)) * n * ystep
 
             ymin = ymin if ymin < 0 else 0
 
