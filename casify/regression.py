@@ -34,12 +34,22 @@ class RegressionModel(Function):
 
         if domain is not None:
             xmin, xmax = domain
+            if xmin != 0:
+                xmax = xmax + xstep
+                xmin = xmin - xstep
+            else:
+                xmax = xmax + xstep
+
             x_vals = numpy.linspace(xmin, xmax, 1024)
+
             ymin = int(numpy.min(numpy_func(x_vals)))
+            n = ymin // ystep + 1
+            ymin = n * ystep
             ymin = ymin if ymin < 0 else 0
+
             ymax = int(numpy.max(numpy_func(x_vals)))
-            if ymin > ymax:
-                ymin, ymax = ymax, ymin
+            n = ymax // ystep + 1
+            ymax = n * ystep
 
         else:
             xmin, xmax = (-6, 6)

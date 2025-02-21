@@ -129,14 +129,15 @@ class Function:
             x_vals = numpy.linspace(xmin, xmax, 1024)
 
             ymin = int(numpy.min(numpy_func(x_vals)))
+
+            n = ymin // ystep + 1
+            ymin = n * ystep
+
             ymin = ymin if ymin < 0 else 0
-            if ymin != 0:
-                n = ymin // ystep + 1
-                ymin = int(ymin / abs(ymin)) * n * ystep
 
             ymax = int(numpy.max(numpy_func(x_vals)))
             n = ymax // ystep + 1
-            ymax = int(ymax / abs(ymax)) * n * ystep
+            ymax = n * ystep
 
         else:
             xmin, xmax = (-6, 6)
