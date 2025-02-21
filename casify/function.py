@@ -1,6 +1,7 @@
 # import sympy
 
 from .equation import solve
+from .printing import pretty
 
 
 class Function:
@@ -46,6 +47,8 @@ class Function:
         import sympy
 
         self._f_expr = sympy.sympify(f_expr)
+        if self._f_expr.is_rational_function() and not self._f_expr.is_polynomial():
+            return RationalFunction(f_expr)
 
     def __call__(self, x):
         return self._f_expr.subs("x", x)
@@ -165,9 +168,36 @@ class Function:
         return str(self._f_expr)
 
 
+class RationalFunction(Function):
+    def __init__(self, f_expr):
+        super().__init__(f_expr)
+
+    def vertical_asymptotes(self):
+        import sympy
+
+        dividend, divisor = sympy.fraction(self._f_expr)
+        zeros_dividend = sympy.solve(dividend, dict=True)
+        zeros_divisor = sympy.solve(divisor, dict=True)
+
+        vertical_asymptotes = []
+        for zero in zeros_divisor:
+            if zero not in zeros_dividend:
+                vertical_asymptotes.append(zero)
+
+        vertical_asymptotes = [pretty(zero) for zero in vertical_asymptotes]
+
+        return vertical_asymptotes
+
+
 def function(f):
     """Alternative way to write `function`"""
-    return Function(f)
+    import sympy
+
+    f = sympy.sympify(f)
+    if f.is_rational_function() and not f.is_polynomial():
+        return RationalFunction(f)
+    else:
+        return Function(f)
 
 
 def derivative(expr, var="x"):

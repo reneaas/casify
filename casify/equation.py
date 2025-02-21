@@ -126,8 +126,6 @@ def solve(*equations, variables=None, pprint=True):
         for sol in solutions:
             if not False in [not "I" in str(sol.get(key)) for key in sol]:
                 real_solutions.append(sol)
-            # if not False in [sol.get(key).is_real for key in sol]:
-            # real_solutions.append(sol)
 
     if real_solutions == [] or real_solutions == {}:
         return "No solution"
@@ -157,7 +155,6 @@ def Solve(*equations, variables=None, pprint=True):
 
 def _solve_inequality(expr, variables=None):
     import sympy
-    import re
 
     if variables:
         solution = sympy.solve(expr, variables, dict=True)
@@ -175,39 +172,3 @@ def _solve_inequality(expr, variables=None):
     solution = sympy.pretty(solution)
 
     return solution
-
-    new_expression = []
-    for i, expr in enumerate(expression):
-        tmp = []
-        expr = expr.split("&")
-        for j, s in enumerate(expr):
-            if "Eq" in s:
-                s = s.replace("Eq(", "")
-                s = s.replace(")", "")
-                s = s.split(",")
-                s = " =".join(s)
-            elif (
-                "(-oo < x)" in s
-                or "(x < oo)" in s
-                or "(-oo <= x)" in s
-                or "(x <= oo)" in s
-            ):
-                pass
-            elif "sqrt" not in s:
-                s = s.replace(")", "")
-                s = s.replace("(", "")
-                tmp.append(s)
-            else:
-                s = s[2:-2]
-                while (
-                    s[-1] == s[-2]
-                ):  # remove unecessary parenthesis "))". Only leave single parenthesis ")"
-                    s = s[:-1]
-                tmp.append(s)
-
-        tmp = "  ∧  ".join(tmp)
-
-        new_expression.append(tmp)
-
-    new_expression = "    ∨    ".join(new_expression)
-    return new_expression
