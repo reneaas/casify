@@ -50,7 +50,7 @@ class RegresjonModell(Funksjon):
             ymin = ymin if ymin < 0 else 0
 
             ymax = int(numpy.max(numpy_func(x_vals)))
-            n = ymax // ystep + 1
+            n = ymax // ystep + 2
             ymax = n * ystep
 
         else:
