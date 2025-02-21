@@ -44,6 +44,8 @@ class RegresjonModell(Funksjon):
 
             ymin = int(numpy.min(numpy_func(x_vals)))
 
+            print(f"{ymin = }")
+
             n = ymin // ystep + 1
             ymin = int(ymin / abs(ymin)) * n * ystep
 
