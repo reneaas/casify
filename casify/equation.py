@@ -270,18 +270,6 @@ def _solve_inequality(expr, variables=None):
     else:
         solution = sympy.solve(expr, dict=True)
 
-    solution = str(solution)
-    if solution == "False":
-        return "No solution"
-
-    solution = solution.replace("(-oo < x) & (x < oo)", "x ∈ ℝ")
-
-    solution = sympy.sympify(solution)
-    try:
-        solution = sympy.pretty(solution, use_unicode=True)
-    except UnicodeEncodeError:
-        solution = sympy.pretty(solution)
-
     solution = simplify_solution(solution)
 
     return solution
