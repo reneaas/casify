@@ -169,6 +169,9 @@ def _solve_inequality(expr, variables=None):
 
     # expression = solution.split("|")
     solution = sympy.sympify(solution)
-    solution = sympy.pretty(solution)
+    try:
+        solution = sympy.pretty(solution, use_unicode=True)
+    except:
+        solution = sympy.pretty(solution)
 
     return solution
