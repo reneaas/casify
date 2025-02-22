@@ -76,12 +76,9 @@ def div(p, q):
 
     k, r = sympy.div(p, q)
 
-    if r == 0:
-        return str(k)
-    elif sympy.degree(r) == 0:
-        return f"{k} + {r}/({q})"
-    else:
-        return f"{k} + ({r})/({q})"
+    res = k + r / q
+
+    return sympy.pretty(res, order="grlex")
 
 
 def Div(p, q):
