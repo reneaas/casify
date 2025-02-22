@@ -23,6 +23,8 @@ from .vektor import vektor, Vektor2d, vinkel
 
 from . import abc
 
+from . import printing
+
 
 __all__ = [
     "solve",
