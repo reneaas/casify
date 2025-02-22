@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="casify",
-    version="0.4.8",
+    version="0.4.9",
     author="René Alexander Ask",
     author_email="rene.ask@icloud.com",
     description="A CAS-library wrapped around sympy to simplify use of CAS-functionality in mathematics.",
@@ -24,6 +24,7 @@ setuptools.setup(
         "numpy",
         "scipy",
         "signchart",
+        "re",
     ],
     python_requires=">=3.7",
 )
