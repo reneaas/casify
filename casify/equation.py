@@ -154,12 +154,20 @@ def Solve(*equations, variables=None, pprint=True):
 
 
 def _simplify_solution(solution):
-    import re
+    # 1) Replace (-∞ < x ∧ x < something) with x < something
+    solution = re.sub(r"\(-∞ < x ∧ x ([<≤]) (.*?)\)", r"x \1 \2", solution)
 
-    # 1) Remove (-∞ < x ∧ x < ...)
-    solution = re.sub(r"\(-∞ < x ∧ x < (.*?)\)", r"x < \1", solution)
-    # 2) Remove (x < ∞ ∧ something < x)
-    solution = re.sub(r"\(x < ∞ ∧ (.*?) < x\)", r"\1 < x", solution)
+    # 2) Replace (x < ∞ ∧ something < x) with something < x
+    solution = re.sub(r"\(x < ∞ ∧ (.*?) ([<≤]) x\)", r"\1 \2 x", solution)
+
+    # 3) Replace (x [<≤] something ∧ -∞ < x) with x [<≤] something
+    solution = re.sub(r"\(x ([<≤]) (.*?) ∧ -∞ < x\)", r"x \1 \2", solution)
+
+    # 4) Replace (x [<≤] something ∧ x < ∞) with x [<≤] something
+    solution = re.sub(r"\(x ([<≤]) (.*?) ∧ x < ∞\)", r"x \1 \2", solution)
+
+    # 4) Replace (something [<≤] x ∧ x < ∞) with something [<≤] x
+    solution = re.sub(r"\((.*?) ([<≤]) x ∧ x < ∞\)", r"\1 \2 x", solution)
 
     # Optional cleanup of extra parentheses and whitespace
     solution = re.sub(r"\s+", " ", solution)
@@ -187,5 +195,7 @@ def _solve_inequality(expr, variables=None):
         solution = sympy.pretty(solution, use_unicode=True)
     except UnicodeEncodeError:
         solution = sympy.pretty(solution)
+
+    solution = _simplify_solution(solution)
 
     return solution
