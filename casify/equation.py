@@ -154,6 +154,8 @@ def Solve(*equations, variables=None, pprint=True):
 
 
 def _simplify_solution(solution):
+    import re
+
     # 1) Replace (-∞ < x ∧ x < something) with x < something
     solution = re.sub(r"\(-∞ < x ∧ x ([<≤]) (.*?)\)", r"x \1 \2", solution)
 
