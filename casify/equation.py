@@ -153,6 +153,20 @@ def Solve(*equations, variables=None, pprint=True):
     return solve(*equations, variables=variables, pprint=pprint)
 
 
+def _simplify_solution(solution):
+    import re
+
+    # 1) Remove (-∞ < x ∧ x < ...)
+    solution = re.sub(r"\(-∞ < x ∧ x < (.*?)\)", r"x < \1", solution)
+    # 2) Remove (x < ∞ ∧ something < x)
+    solution = re.sub(r"\(x < ∞ ∧ (.*?) < x\)", r"\1 < x", solution)
+
+    # Optional cleanup of extra parentheses and whitespace
+    solution = re.sub(r"\s+", " ", solution)
+    solution = solution.strip()
+    return solution
+
+
 def _solve_inequality(expr, variables=None):
     import sympy
 
@@ -171,7 +185,7 @@ def _solve_inequality(expr, variables=None):
     solution = sympy.sympify(solution)
     try:
         solution = sympy.pretty(solution, use_unicode=True)
-    except:
+    except UnicodeEncodeError:
         solution = sympy.pretty(solution)
 
     return solution
