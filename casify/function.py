@@ -1,7 +1,6 @@
 # import sympy
 
 from .equation import solve
-from .printing import pretty
 
 
 class Function:
