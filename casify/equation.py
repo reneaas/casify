@@ -87,6 +87,8 @@ def _solve_system_of_equations(*eqs):
         combined_sol = []  # Stores each solution of the system of equations
         keep_sol = True
         for var, val in sol.items():
+
+            # Check if the solution is complex and discard it if it is.
             if "I" in str(val):
                 keep_sol = False
                 break
@@ -151,12 +153,13 @@ def solve(*eqs):
 
             lhs = _handle_expression(lhs)
             rhs = _handle_expression(rhs)
-            eq = " ".join([str(lhs), sign, str(rhs)])
+            eqs = " ".join([str(lhs), sign, str(rhs)])
+
             return _solve_inequality(eqs)
 
         # Or if it is a onevariable single equation
         else:
-            return _solve_single_equation(*eqs)
+            return _solve_single_equation(eqs)
 
     # Else solve a system of equations
     else:
