@@ -131,35 +131,35 @@ def solve(*eqs):
 
     # Check it it is a single equation
     if len(eqs) == 1:
-        eqs = eqs[0]
+        eq = eqs[0]
         # If the equation is an inequality:
-        if ">" or "<" in eqs:
+        if ">" or "<" in eq:
 
-            if ">=" in eqs:
-                lhs, rhs = eqs.split(">=")
+            if ">=" in eq:
+                lhs, rhs = eq.split(">=")
                 sign = ">="
 
-            elif "<=" in eqs:
-                lhs, rhs = eqs.split("<=")
+            elif "<=" in eq:
+                lhs, rhs = eq.split("<=")
                 sign = "<="
 
-            elif ">" in eqs:
-                lhs, rhs = eqs.split(">")
+            elif ">" in eq:
+                lhs, rhs = eq.split(">")
                 sign = ">"
 
-            elif "<" in eqs:
-                lhs, rhs = eqs.split("<")
+            elif "<" in eq:
+                lhs, rhs = eq.split("<")
                 sign = "<"
 
             lhs = _handle_expression(lhs)
             rhs = _handle_expression(rhs)
-            eqs = " ".join([str(lhs), sign, str(rhs)])
+            eq = " ".join([str(lhs), sign, str(rhs)])
 
-            return _solve_inequality(eqs)
+            return _solve_inequality(eq)
 
         # Or if it is a onevariable single equation
         else:
-            return _solve_single_equation(eqs)
+            return _solve_single_equation(eq)
 
     # Else solve a system of equations
     else:
