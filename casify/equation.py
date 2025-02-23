@@ -64,7 +64,6 @@ def _solve_single_equation(eq):
 
 
 def _make_equation(eq):
-    import sympy
 
     lhs, rhs = eq.split("=")
     lhs = _handle_expression(lhs)
@@ -72,10 +71,9 @@ def _make_equation(eq):
     return lhs - rhs
 
 
-def _solve_system_of_equations(*equations):
+def _solve_system_of_equations(*eqs):
     import sympy
 
-    eqs = [*equations]
     eqs = [_make_equation(eq) for eq in eqs]
 
     # Get all variables from equations
@@ -102,12 +100,12 @@ def _solve_system_of_equations(*equations):
     formatted_sols = sympy.Or(*formatted_sols)
 
     if sympy.pretty(formatted_sols, use_unicode=True) == "False":
-        return "No solutions"
+        return "No solution"
     else:
         return sympy.pretty(formatted_sols, use_unicode=True)
 
 
-def solve(*equations, variables=None, pprint=True):
+def solve(*eqs, variables=None, pprint=True):
     """Solves an equation or a set of equations or inequalities.
 
     Args:
@@ -128,27 +126,26 @@ def solve(*equations, variables=None, pprint=True):
         'a = 3/8 ∧ b = -1/2 ∧ c = 17/8'
 
     """
-    import sympy
 
-    eqs = [*equations]
+    # Check it it is a single equation
     if len(eqs) == 1:
         # If the equation is an inequality:
-        if ">" or "<" in eqs[0]:
+        if ">" or "<" in eqs:
 
-            if ">=" in eq:
-                lhs, rhs = eq.split(">=")
+            if ">=" in eqs:
+                lhs, rhs = eqs.split(">=")
                 sign = ">="
 
-            elif "<=" in eq:
-                lhs, rhs = eq.split("<=")
+            elif "<=" in eqs:
+                lhs, rhs = eqs.split("<=")
                 sign = "<="
 
-            elif ">" in eq:
-                lhs, rhs = eq.split(">")
+            elif ">" in eqs:
+                lhs, rhs = eqs.split(">")
                 sign = ">"
 
-            elif "<" in eq:
-                lhs, rhs = eq.split("<")
+            elif "<" in eqs:
+                lhs, rhs = eqs.split("<")
                 sign = "<"
 
             lhs = _handle_expression(lhs)
@@ -170,7 +167,7 @@ def Solve(*equations, variables=None, pprint=True):
     return solve(*equations, variables=variables, pprint=pprint)
 
 
-def _solve_inequality(expr, variables=None):
+def _solve_inequality(expr):
     import sympy
 
     solution = sympy.solve(expr)
