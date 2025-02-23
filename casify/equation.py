@@ -49,6 +49,64 @@ def _handle_expression(expr):
         return sympy.sympify(expr)
 
 
+def _solve_single_equation(eq):
+    import sympy
+
+    eq = _make_equation(eq)
+    var = eq.free_symbols.pop()
+    solutions = sympy.solve(eq)
+
+    # Format each solution as "x = value"
+    formatted_sols = [sympy.Eq(var, sol) for sol in solutions if "I" not in str(sol)]
+    sol = sympy.Or(*formatted_sols)
+
+    return sympy.pretty(sol, use_unicode=True)
+
+
+def _make_equation(eq):
+    import sympy
+
+    lhs, rhs = eq.split("=")
+    lhs = _handle_expression(lhs)
+    rhs = _handle_expression(rhs)
+    return lhs - rhs
+
+
+def _solve_system_of_equations(*equations):
+    import sympy
+
+    eqs = [*equations]
+    eqs = [_make_equation(eq) for eq in eqs]
+
+    # Get all variables from equations
+    vars = list(set().union(*[eq.free_symbols for eq in eqs]))
+    vars = sorted(vars, key=lambda x: str(x))
+
+    solutions = sympy.solve(eqs, vars, dict=True)
+
+    formatted_sols = []
+    for sol in solutions:
+        combined_sol = []  # Stores each solution of the system of equations
+        keep_sol = True
+        for var, val in sol.items():
+            if "I" in str(val):
+                keep_sol = False
+                break
+            else:
+                combined_sol.append(sympy.Eq(var, val))
+
+        if keep_sol:
+            combined_sol = sympy.And(*combined_sol)
+            formatted_sols.append(combined_sol)
+
+    formatted_sols = sympy.Or(*formatted_sols)
+
+    if sympy.pretty(formatted_sols, use_unicode=True) == "False":
+        return "No solutions"
+    else:
+        return sympy.pretty(formatted_sols, use_unicode=True)
+
+
 def solve(*equations, variables=None, pprint=True):
     """Solves an equation or a set of equations or inequalities.
 
@@ -72,10 +130,11 @@ def solve(*equations, variables=None, pprint=True):
     """
     import sympy
 
-    eqs = []
-    # Parse the equations
-    for eq in equations:
-        if ">" in eq or "<" in eq:
+    eqs = [*equations]
+    if len(eqs) == 1:
+        # If the equation is an inequality:
+        if ">" or "<" in eqs[0]:
+
             if ">=" in eq:
                 lhs, rhs = eq.split(">=")
                 sign = ">="
@@ -95,59 +154,15 @@ def solve(*equations, variables=None, pprint=True):
             lhs = _handle_expression(lhs)
             rhs = _handle_expression(rhs)
             eq = " ".join([str(lhs), sign, str(rhs)])
+            return _solve_inequality(*eqs)
 
-            return _solve_inequality(eq)
-
+        # Or if it is a onevariable single equation
         else:
-            if "==" in eq:
-                lhs, rhs = eq.split("==")
+            return _solve_single_equation(*eqs)
 
-            elif "=" in eq:
-                lhs, rhs = eq.split("=")
-
-            lhs = _handle_expression(lhs)
-            rhs = _handle_expression(rhs)
-
-            eqs.append(sympy.Eq(lhs, rhs))
-
-    if variables:
-        solutions = sympy.solve(eqs, variables, dict=True)
+    # Else solve a system of equations
     else:
-        solutions = sympy.solve(eqs, dict=True)
-
-    # Remove complex solutions from the solution set.
-    real_solutions = []
-    if isinstance(solutions, dict):
-        real_solutions = {
-            key: solutions.get(key) for key in solutions if solutions.get(key).is_real
-        }
-        real_solutions = [real_solutions]
-        real_solutions = [sol.get(key) for key in real_solutions if not "I" in str(sol)]
-
-    else:
-        for sol in solutions:
-            if not False in [not "I" in str(sol.get(key)) for key in sol]:
-                real_solutions.append(sol)
-
-    if real_solutions == [] or real_solutions == {}:
-        return "No solution"
-
-    elif pprint:
-        pprint_solution = ""
-        for i, sol in enumerate(real_solutions):
-            pprint_solution += (
-                str(sol)
-                .replace(":", " =")
-                .replace("{", "")
-                .replace("}", "")
-                .replace(",", " ∧")
-            )
-            if i < len(real_solutions) - 1:
-                pprint_solution += "    ∨    "
-
-        return pprint_solution
-    else:
-        return real_solutions
+        return _solve_system_of_equations(*eqs)
 
 
 def Solve(*equations, variables=None, pprint=True):
