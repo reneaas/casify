@@ -105,7 +105,7 @@ def _solve_system_of_equations(*eqs):
         return sympy.pretty(formatted_sols, use_unicode=True)
 
 
-def solve(*eqs, variables=None, pprint=True):
+def solve(*eqs):
     """Solves an equation or a set of equations or inequalities.
 
     Args:
@@ -129,6 +129,7 @@ def solve(*eqs, variables=None, pprint=True):
 
     # Check it it is a single equation
     if len(eqs) == 1:
+        eqs = eqs[0]
         # If the equation is an inequality:
         if ">" or "<" in eqs:
 
@@ -151,7 +152,7 @@ def solve(*eqs, variables=None, pprint=True):
             lhs = _handle_expression(lhs)
             rhs = _handle_expression(rhs)
             eq = " ".join([str(lhs), sign, str(rhs)])
-            return _solve_inequality(*eqs)
+            return _solve_inequality(eqs)
 
         # Or if it is a onevariable single equation
         else:
