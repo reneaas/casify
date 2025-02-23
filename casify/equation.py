@@ -133,7 +133,7 @@ def solve(*eqs):
     if len(eqs) == 1:
         eq = eqs[0]
         # If the equation is an inequality:
-        if ">" or "<" in eq:
+        if any(op in eq for op in [">=", "<=", ">", "<"]):
 
             if ">=" in eq:
                 lhs, rhs = eq.split(">=")
