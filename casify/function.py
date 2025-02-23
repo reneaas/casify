@@ -182,7 +182,7 @@ class RationalFunction(Function):
             if zero not in zeros_dividend:
                 vertical_asymptotes.append(zero)
 
-        vertical_asymptotes = [pretty(zero) for zero in vertical_asymptotes]
+        vertical_asymptotes = [sympy.pretty(zero) for zero in vertical_asymptotes]
 
         return vertical_asymptotes
 

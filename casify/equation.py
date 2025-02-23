@@ -163,9 +163,9 @@ def solve(*eqs):
         return _solve_system_of_equations(*eqs)
 
 
-def Solve(*equations, variables=None, pprint=True):
+def Solve(*eqs):
     """Alternative way to write `solve`."""
-    return solve(*equations, variables=variables, pprint=pprint)
+    return solve(*eqs)
 
 
 def _solve_inequality(expr):

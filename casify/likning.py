@@ -1,7 +1,7 @@
 from .equation import solve
 
 
-def løs(*likninger, variabler=None, pprint=True):
+def løs(*likninger):
     """Løser én eller flere likninger (et likningssystem), eller én ulikhet.
 
     Args:
@@ -31,13 +31,13 @@ def løs(*likninger, variabler=None, pprint=True):
          '-1 ≤ x ∧ x ≤ 2'
 
     """
-    løsning = solve(*likninger, variables=variabler, pprint=pprint)
+    løsning = solve(*likninger)
     if løsning == "No solution":
         return "Ingen løsning"
     else:
         return løsning
 
 
-def Løs(*likninger, variabler=None, pprint=True):
+def Løs(*likninger):
     """Alternativ skrivemåte for `løs`."""
-    return løs(*likninger, variabler=variabler, pprint=pprint)
+    return løs(*likninger)
