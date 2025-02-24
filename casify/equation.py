@@ -58,9 +58,11 @@ def _solve_single_equation(eq):
 
     # Format each solution as "x = value"
     formatted_sols = [sympy.Eq(var, sol) for sol in solutions if "I" not in str(sol)]
-    sol = sympy.Or(*formatted_sols)
+    formatted_sols = sympy.Or(*formatted_sols)
 
-    return sympy.pretty(sol, use_unicode=True)
+    formatted_sols = sympy.factor(formatted_sols)
+
+    return sympy.pretty(formatted_sols, use_unicode=True)
 
 
 def _make_equation(eq):
@@ -100,6 +102,7 @@ def _solve_system_of_equations(*eqs):
             formatted_sols.append(combined_sol)
 
     formatted_sols = sympy.Or(*formatted_sols)
+    formatted_sols = sympy.factor(formatted_sols)
 
     if sympy.pretty(formatted_sols, use_unicode=True) == "False":
         return "No solution"
