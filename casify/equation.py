@@ -97,14 +97,13 @@ def _solve_system_of_equations(*eqs):
                 keep_sol = False
                 break
             else:
-                combined_sol.append(sympy.Eq(var, val))
+                combined_sol.append(sympy.Eq(var, sympy.factor(val)))
 
         if keep_sol:
             combined_sol = sympy.And(*combined_sol)
             formatted_sols.append(combined_sol)
 
     formatted_sols = sympy.Or(*formatted_sols)
-    formatted_sols = sympy.factor(formatted_sols)
 
     if sympy.pretty(formatted_sols, use_unicode=True) == "False":
         return "No solution"
