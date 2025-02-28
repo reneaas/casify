@@ -57,7 +57,9 @@ def _solve_single_equation(eq):
     solutions = sympy.solve(eq)
 
     # Format each solution as "x = value"
-    formatted_sols = [sympy.Eq(var, sol) for sol in solutions if "I" not in str(sol)]
+    formatted_sols = [
+        sympy.Eq(var, sympy.factor(sol)) for sol in solutions if "I" not in str(sol)
+    ]
     formatted_sols = sympy.Or(*formatted_sols)
 
     formatted_sols = sympy.factor(formatted_sols)
