@@ -81,6 +81,14 @@ class RegressionModel(Function):
         plotmath.show()
 
 
+def reg(
+    model,
+    xdata,
+    ydata,
+):
+    return make_model(model, xdata, ydata)
+
+
 def make_model(
     model,
     xdata,
