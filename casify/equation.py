@@ -56,6 +56,12 @@ def _solve_single_equation(eq, numerical=False):
     var = eq.free_symbols.pop()
     solutions = sympy.solve(eq)
 
+    if solutions == []:
+        try:
+            solutions = sympy.nsolve(eq, 1)
+        except:
+            return "No solution"
+
     if numerical:
         solutions = [round(sol.evalf(), 3) for sol in solutions if "I" not in str(sol)]
 
