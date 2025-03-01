@@ -58,7 +58,7 @@ def _solve_single_equation(eq, numerical=False):
 
     if solutions == []:
         try:
-            solutions = sympy.nsolve(eq, 1)
+            solutions = sympy.nsolve(eq, 1, dict=True)
         except:
             return "No solution"
 
