@@ -14,8 +14,8 @@ from .algebra import (
     polynomdivisjon,
     Polynomdivisjon,
 )
-from .regression import make_model, reg
-from .regresjon import lag_modell
+from .regression import make_model
+from .regresjon import lag_modell, reg
 
 from .vector import vector, Vector2d
 

@@ -83,6 +83,14 @@ class RegresjonModell(Funksjon):
         plotmath.show()
 
 
+def reg(
+    modell,
+    xdata,
+    ydata,
+):
+    return lag_modell(modell, xdata, ydata)
+
+
 def lag_modell(
     modell,
     xdata,
