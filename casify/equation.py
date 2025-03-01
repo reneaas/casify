@@ -181,13 +181,10 @@ def Solve(*eqs):
     return solve(*eqs)
 
 
-def _solve_inequality(expr, numerical=False):
+def _solve_inequality(expr):
     import sympy
 
     solution = sympy.solve(expr)
-
-    if numerical:
-        solution = [sol.evalf() for sol in solution]
 
     solution = simplify_solution(solution)
 
