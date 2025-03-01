@@ -165,7 +165,7 @@ def solve(*eqs, numerical=False):
             rhs = _handle_expression(rhs)
             eq = " ".join([str(lhs), sign, str(rhs)])
 
-            return _solve_inequality(eq, numerical=numerical)
+            return _solve_inequality(eq)
 
         # Or if it is a onevariable single equation
         else:
