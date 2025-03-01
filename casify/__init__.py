@@ -1,5 +1,5 @@
 from .equation import solve, Solve
-from .likning import løs, Løs
+from .likning import løs, Løs, nløs
 from .function import function, Function
 from .funksjon import funksjon, Funksjon
 from .algebra import (
@@ -29,6 +29,7 @@ from . import printing
 __all__ = [
     "solve",
     "løs",
+    "nløs",
     "Solve",
     "Løs",
     "function",
