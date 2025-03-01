@@ -49,12 +49,15 @@ def _handle_expression(expr):
         return sympy.sympify(expr)
 
 
-def _solve_single_equation(eq):
+def _solve_single_equation(eq, numerical=False):
     import sympy
 
     eq = _make_equation(eq)
     var = eq.free_symbols.pop()
     solutions = sympy.solve(eq)
+
+    if numerical:
+        solutions = [sol.evalf() for sol in solutions if "I" not in str(sol)]
 
     # Format each solution as "x = value"
     formatted_sols = [
@@ -75,7 +78,7 @@ def _make_equation(eq):
     return lhs - rhs
 
 
-def _solve_system_of_equations(*eqs):
+def _solve_system_of_equations(*eqs, numerical=False):
     import sympy
 
     eqs = [_make_equation(eq) for eq in eqs]
@@ -97,6 +100,9 @@ def _solve_system_of_equations(*eqs):
                 keep_sol = False
                 break
             else:
+                if numerical:
+                    val = val.evalf()
+
                 combined_sol.append(sympy.Eq(var, sympy.factor(val)))
 
         if keep_sol:
@@ -111,7 +117,7 @@ def _solve_system_of_equations(*eqs):
         return sympy.pretty(formatted_sols, use_unicode=True)
 
 
-def solve(*eqs):
+def solve(*eqs, numerical=False):
     """Solves an equation or a set of equations or inequalities.
 
     Args:
@@ -159,15 +165,15 @@ def solve(*eqs):
             rhs = _handle_expression(rhs)
             eq = " ".join([str(lhs), sign, str(rhs)])
 
-            return _solve_inequality(eq)
+            return _solve_inequality(eq, numerical=numerical)
 
         # Or if it is a onevariable single equation
         else:
-            return _solve_single_equation(eq)
+            return _solve_single_equation(eq, numerical=numerical)
 
     # Else solve a system of equations
     else:
-        return _solve_system_of_equations(*eqs)
+        return _solve_system_of_equations(*eqs, numerical=numerical)
 
 
 def Solve(*eqs):
@@ -175,10 +181,13 @@ def Solve(*eqs):
     return solve(*eqs)
 
 
-def _solve_inequality(expr):
+def _solve_inequality(expr, numerical=False):
     import sympy
 
     solution = sympy.solve(expr)
+
+    if numerical:
+        solution = [sol.evalf() for sol in solution]
 
     solution = simplify_solution(solution)
 

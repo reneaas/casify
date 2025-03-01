@@ -1,6 +1,14 @@
 from .equation import solve
 
 
+def nløs(*likninger):
+    løsning = solve(*likninger, numerical=True)
+    if løsning == "No solution":
+        return "Ingen løsning"
+    else:
+        return løsning
+
+
 def løs(*likninger):
     """Løser én eller flere likninger (et likningssystem), eller én ulikhet.
 
