@@ -57,7 +57,7 @@ def _solve_single_equation(eq, numerical=False):
     solutions = sympy.solve(eq)
 
     if numerical:
-        solutions = [sol.evalf() for sol in solutions if "I" not in str(sol)]
+        solutions = [round(sol.evalf(), 3) for sol in solutions if "I" not in str(sol)]
 
     # Format each solution as "x = value"
     formatted_sols = [
@@ -101,7 +101,7 @@ def _solve_system_of_equations(*eqs, numerical=False):
                 break
             else:
                 if numerical:
-                    val = val.evalf()
+                    val = round(val.evalf(), 3)
 
                 combined_sol.append(sympy.Eq(var, sympy.factor(val)))
 
