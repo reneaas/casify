@@ -187,6 +187,25 @@ def Solve(*eqs):
     return solve(*eqs)
 
 
+def nsolve(eq, start_value=1):
+    import sympy
+
+    eq = _make_equation(eq)
+    solution = sympy.nsolve(eq, start_value)
+    try:
+        solution = round(solution, 3)
+        var = eq.free_symbols.pop()
+        s = sympy.Eq(var, solution)
+        s = sympy.pretty(s, use_unicode=True)
+
+        return s
+
+    except ValueError:
+        raise ValueError(
+            "Fant ingen løsning. Sjekk at likningen stemmer eller prøv en annen staretverdi ved å skrive nløs(likning, startverdi)"
+        )
+
+
 def _solve_inequality(expr):
     import sympy
 

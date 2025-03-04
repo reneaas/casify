@@ -1,15 +1,26 @@
-from .equation import solve
+from .equation import solve, nsolve, _make_equation
 
 
-def nløs(*likninger):
-    løsning = solve(*likninger, numerical=True)
-    if løsning == "No solution":
-        return "Ingen løsning"
-    else:
-        return løsning
+def nløs(eq, startverdi=1):
+    import sympy
+
+    eq = _make_equation(eq)
+    solution = sympy.nsolve(eq, startverdi)
+    try:
+        solution = round(solution, 3)
+        var = eq.free_symbols.pop()
+        s = sympy.Eq(var, solution)
+        s = sympy.pretty(s, use_unicode=True)
+
+        return s
+
+    except ValueError:
+        raise ValueError(
+            "Fant ingen løsning. Sjekk at likningen stemmer eller prøv en annen startverdi ved å skrive nløs(likning, startverdi). F.eks nløs(likning, 10)"
+        )
 
 
-def løs(*likninger):
+def løs(*likninger, numerisk=False):
     """Løser én eller flere likninger (et likningssystem), eller én ulikhet.
 
     Args:
@@ -39,13 +50,13 @@ def løs(*likninger):
          '-1 ≤ x ∧ x ≤ 2'
 
     """
-    løsning = solve(*likninger)
+    løsning = solve(*likninger, numerical=numerisk)
     if løsning == "No solution":
         return "Ingen løsning"
     else:
         return løsning
 
 
-def Løs(*likninger):
+def Løs(*likninger, numerisk=False):
     """Alternativ skrivemåte for `løs`."""
-    return løs(*likninger)
+    return løs(*likninger, numerisk=numerisk)
