@@ -5,8 +5,8 @@ def nløs(eq, startverdi=1):
     import sympy
 
     eq = _make_equation(eq)
-    solution = sympy.nsolve(eq, startverdi)
     try:
+        solution = sympy.nsolve(eq, startverdi)
         solution = round(solution, 3)
         var = eq.free_symbols.pop()
         s = sympy.Eq(var, solution)
