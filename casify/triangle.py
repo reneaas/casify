@@ -222,15 +222,9 @@ def draw_triangle(
             x = x.evalf()
             y = y.evalf()
 
-            print(f"{x = }")
-            print(f"{y = }")
-
             points = segment.points
             dx = float(points[1].x.evalf() - points[0].x.evalf())
             dy = float(points[1].y.evalf() - points[0].y.evalf())
-
-            print(f"{dx = }")
-            print(f"{dy = }")
 
             unit_vector = np.array([dy, -dx]) / np.linalg.norm([dx, dy])
 
