@@ -213,6 +213,7 @@ def draw_triangle(
 
     segments = triangle.sides
 
+    ax = plotmath.gca()
     for segment, label in zip(segments, label_sides):
         if label:
             x, y = tuple(segment.midpoint)
@@ -228,7 +229,6 @@ def draw_triangle(
                 va="center",
             )
 
-    ax = plotmath.gca()
     ax.axis("equal")
     ax.axis("off")
 
