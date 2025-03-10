@@ -75,7 +75,14 @@ def _draw_angle_arc(ax, vertex, *other_points, radius=0.4):
 
 
 def draw_triangle(
-    *points, sss=None, asa=None, sas=None, show_vertices=True, radius=0.4
+    *points,
+    sss=None,
+    asa=None,
+    sas=None,
+    show_vertices=True,
+    radius=0.4,
+    alpha=0.1,
+    show=True,
 ):
     import sympy
     import plotmath
@@ -91,9 +98,14 @@ def draw_triangle(
 
     points = [(point.x.evalf(), point.y.evalf()) for point in triangle.vertices]
 
-    plotmath.plot_triangle(*points, show_vertices=show_vertices)
+    plotmath.plot_polygon(*points, show_vertices=show_vertices, alpha=alpha)
 
     for vertex in points:
         other_points = [point for point in points if point != vertex]
 
         _draw_angle_arc(vertex, *other_points, radius=radius)
+
+    if show:
+        plotmath.show()
+    else:
+        return plotmath.gca()
