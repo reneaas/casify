@@ -1,4 +1,4 @@
-def _draw_angle_arc(vertex, *other_points, radius=0.4):
+def _draw_angle_arc(vertex, *other_points, radius=0.4, show_angle_value=False):
     """
     Draw an arc to show the angle between two points relative to a vertex.
     For right angles (90 degrees), draws a small square instead.
@@ -82,6 +82,22 @@ def _draw_angle_arc(vertex, *other_points, radius=0.4):
         # Draw the arc
         ax.plot(x, y, "k-", linewidth=1)
 
+        if show_angle_value:
+            # Calculate angle value
+            angle_deg = np.degrees(angle)
+            angle_str = f"${angle_deg:.2f}^\\circ$"
+
+            # Calculate text position
+            text_pos = vertex + 1.2 * radius * (v1 + v2)
+
+            # Plot the angle value
+            ax.text(text_pos[0], text_pos[1], angle_str, fontsize=20)
+
+
+# def _label_vertices(points, labels=["A", "B", "C"]):
+
+#     for point, label in zip(points, labels):
+
 
 def draw_triangle(
     *points,
@@ -118,7 +134,7 @@ def draw_triangle(
     for vertex in points:
         other_points = [point for point in points if point != vertex]
 
-        _draw_angle_arc(vertex, *other_points, radius=radius)
+        _draw_angle_arc(vertex, *other_points, radius=radius, show_angle_value=True)
 
     ax = plotmath.gca()
     ax.axis("equal")
