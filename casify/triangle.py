@@ -116,34 +116,34 @@ def _draw_angle_arc(
         x = vertex[0] + unit_vector[0]
         y = vertex[1] + unit_vector[1]
 
+        angle_deg = np.degrees(angle)
+        if np.abs(angle_deg - round(angle_deg)) < 1e-8:
+            angle_str = f"${int(round(angle_deg))}^\\circ$"
+        else:
+            angle_str = f"${angle_deg:.2f}^\\circ$"
+
+        # Plot the angle value
+        # Determine text alignment based on position relative to vertex
+        dx = x - vertex[0]
+        dy = y - vertex[1]
+
+        # Set horizontal alignment
+        if abs(dx) < 0.1:  # Near vertical
+            ha = "center"
+        elif dx > 0:
+            ha = "left"
+        else:
+            ha = "right"
+
+        # Set vertical alignment
+        if abs(dy) < 0.1:  # Near horizontal
+            va = "center"
+        elif dy > 0:
+            va = "bottom"
+        else:
+            va = "top"
+
         if show_angle_value:
-            # Calculate angle value
-            angle_deg = np.degrees(angle)
-            if np.abs(angle_deg - round(angle_deg)) < 1e-8:
-                angle_str = f"${int(round(angle_deg))}^\\circ$"
-            else:
-                angle_str = f"${angle_deg:.2f}^\\circ$"
-
-            # Plot the angle value
-            # Determine text alignment based on position relative to vertex
-            dx = x - vertex[0]
-            dy = y - vertex[1]
-
-            # Set horizontal alignment
-            if abs(dx) < 0.1:  # Near vertical
-                ha = "center"
-            elif dx > 0:
-                ha = "left"
-            else:
-                ha = "right"
-
-            # Set vertical alignment
-            if abs(dy) < 0.1:  # Near horizontal
-                va = "center"
-            elif dy > 0:
-                va = "bottom"
-            else:
-                va = "top"
             ax.text(x, y, angle_str, fontsize=fontsize, ha="center", va="center")
 
         if vertex_label:
