@@ -224,7 +224,10 @@ def draw_triangle(
             dx = points[1].x - points[0].x
             dy = points[1].y - points[0].y
 
-            if dy / dx > 0:
+            if dx == 0 or dy == 0:
+                ha = "center"
+                va = "bottom"
+            elif dy / dx > 0:
                 ha = "left"
                 va = "bottom"
             elif dy / dx < 0:
