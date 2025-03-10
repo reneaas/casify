@@ -108,6 +108,10 @@ def draw_triangle(
 
         _draw_angle_arc(vertex, *other_points, radius=radius)
 
+    ax = plotmath.gca()
+    ax.axis("equal")
+    ax.axis("off")
+
     if show:
         plotmath.show()
     else:
