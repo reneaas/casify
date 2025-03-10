@@ -160,7 +160,7 @@ def draw_triangle(
         color=color,
     )
 
-    for vertex, label_angle in zip(points, label_angles:
+    for vertex, label_angle in zip(points, label_angles):
         other_points = [point for point in points if point != vertex]
 
         _draw_angle_arc(
