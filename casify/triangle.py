@@ -54,7 +54,7 @@ def _draw_angle_arc(vertex, *other_points, radius=0.4):
         # Calculate square corners
         square_points = [
             vertex + u1,
-            vertex + 0.5 * (u1 + u2),
+            vertex + (u1 + u2),
             vertex + u2,
             vertex,
         ]
