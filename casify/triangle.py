@@ -256,7 +256,7 @@ def draw_triangle(
             ax.text(
                 x=x + 0.5 * radius * unit_vector[0],
                 y=y + 0.5 * radius * unit_vector[1],
-                s=f"${sympy.latex(segment.length)}$",
+                s=f"${sympy.latex(segment.length)}$" if label is True else f"${label}$",
                 fontsize=fontsize,
                 ha=ha,
                 va=va,
