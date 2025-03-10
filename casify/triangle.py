@@ -105,7 +105,8 @@ def _draw_angle_arc(
         y = vertex[1] + radius * np.sin(theta)
 
         # Draw the arc
-        ax.plot(x, y, "k-", linewidth=1)
+        if show_angle_value:
+            ax.plot(x, y, "k-", linewidth=1)
 
         # Calculate text position
         unit_vector = np.array(
