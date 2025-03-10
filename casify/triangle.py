@@ -225,8 +225,8 @@ def draw_triangle(
             print(f"{y = }")
 
             points = segment.points
-            dx = points[1].x.evalf() - points[0].x.evalf()
-            dy = points[1].y.evalf() - points[0].y.evalf()
+            dx = float(points[1].x.evalf() - points[0].x.evalf())
+            dy = float(points[1].y.evalf() - points[0].y.evalf())
 
             print(f"{dx = }")
             print(f"{dy = }")
