@@ -254,13 +254,12 @@ def draw_triangle(
                 va = "center"
 
             ax.text(
-                x=x + radius * unit_vector[0],
-                y=y + radius * unit_vector[1],
+                x=x + 0.5 * radius * unit_vector[0],
+                y=y + 0.5 * radius * unit_vector[1],
                 s=f"${sympy.latex(segment.length)}$",
                 fontsize=fontsize,
                 ha=ha,
                 va=va,
-                bbox=dict(facecolor="white", alpha=0.5, boxstyle="round,pad=0.3"),
             )
 
     ax.axis("equal")
