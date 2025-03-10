@@ -220,8 +220,10 @@ def draw_triangle(
             x = x.evalf()
             y = y.evalf()
 
-            dx = segment.p2.x - segment.p1.x
-            dy = segment.p2.y - segment.p1.y
+            points = segment.points
+            dx = points[1].x - points[0].x
+            dy = points[1].y - points[0].y
+
             if dy / dx > 0:
                 ha = "left"
                 va = "bottom"
