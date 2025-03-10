@@ -26,6 +26,9 @@ from . import abc
 from . import printing
 
 
+from .triangle import draw_triangle
+
+
 __all__ = [
     "solve",
     "nsolve",
@@ -55,4 +58,5 @@ __all__ = [
     "lag_modell",
     "make_model",
     "reg",
+    "draw_triangle",
 ]

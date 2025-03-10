@@ -1,0 +1,99 @@
+def _draw_angle_arc(ax, vertex, *other_points, radius=0.4):
+    """
+    Draw an arc to show the angle between two points relative to a vertex.
+    For right angles (90 degrees), draws a small square instead.
+
+    Parameters:
+    -----------
+    ax : matplotlib.axes.Axes
+        The axes to draw on
+    vertex : tuple
+        The vertex point (x, y)
+    p1, p2 : tuple
+        The two points forming the angle with the vertex
+    radius : float
+        Radius of the arc or size of the square for right angles
+    """
+    import numpy as np
+
+    # Convert points to numpy arrays with float values
+    vertex = np.array(vertex, dtype=float)
+    p1, p2 = other_points
+    p1 = np.array(p1, dtype=float)
+    p2 = np.array(p2, dtype=float)
+
+    # Calculate vectors from vertex to points
+    v1 = p1 - vertex
+    v2 = p2 - vertex
+
+    # Calculate angles
+    angle1 = np.arctan2(v1[1], v1[0])
+    angle2 = np.arctan2(v2[1], v2[0])
+
+    # Calculate the angle between vectors
+    dot_product = np.dot(v1, v2)
+    norms = np.linalg.norm(v1) * np.linalg.norm(v2)
+    angle = np.arccos(np.clip(dot_product / norms, -1.0, 1.0))
+
+    # Check if it's approximately a right angle (90 degrees = π/2 radians)
+    if np.abs(angle - np.pi / 2) < 1e-10:
+        # Draw a square for right angle
+        # Get unit vectors
+        u1 = v1 / np.linalg.norm(v1)
+        u2 = v2 / np.linalg.norm(v2)
+
+        # Calculate square corners
+        square_points = [
+            vertex + radius * u1,
+            vertex + radius * (u1 + u2),
+            vertex + radius * u2,
+            vertex,
+        ]
+
+        # Convert to separate x and y arrays
+        x = [p[0] for p in square_points]
+        y = [p[1] for p in square_points]
+
+        # Plot the square
+        ax.plot(x, y, "k-", linewidth=1)
+
+    else:
+        # Ensure proper angle range for drawing the smaller angle
+        if abs(angle2 - angle1) > np.pi:
+            if angle2 > angle1:
+                angle2 -= 2 * np.pi
+            else:
+                angle1 -= 2 * np.pi
+
+        # Create arc points
+        theta = np.linspace(angle1, angle2, 100)
+        x = vertex[0] + radius * np.cos(theta)
+        y = vertex[1] + radius * np.sin(theta)
+
+        # Draw the arc
+        ax.plot(x, y, "k-", linewidth=1)
+
+
+def draw_triangle(
+    *points, sss=None, asa=None, sas=None, show_vertices=True, radius=0.4
+):
+    import sympy
+    import plotmath
+
+    if sss:
+        triangle = sympy.Triangle(sss=sss)
+    elif asa:
+        triangle = sympy.Triangle(asa=asa)
+    elif sas:
+        triangle = sympy.Triangle(sas=sas)
+    else:
+        triangle = sympy.Triangle(*points)
+
+    points = [(point.x.evalf(), point.y.evalf()) for point in triangle.vertices]
+
+    plotmath.plot_triangle(*points, show_vertices=show_vertices)
+
+    for vertex in points:
+        other_points = [point for point in points if point != vertex]
+
+        _draw_angle_arc(vertex, *other_points, radius=radius)
