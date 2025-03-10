@@ -229,7 +229,7 @@ def draw_triangle(
                 va = "bottom"
             elif dy / dx > 0:
                 ha = "left"
-                va = "bottom"
+                va = "top"
             elif dy / dx < 0:
                 ha = "right"
                 va = "top"
