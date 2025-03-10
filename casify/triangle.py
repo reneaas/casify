@@ -1,5 +1,10 @@
 def _draw_angle_arc(
-    vertex, *other_points, radius=0.4, show_angle_value=False, fontsize=20
+    vertex,
+    *other_points,
+    radius=0.4,
+    show_angle_value=False,
+    vertex_label=None,
+    fontsize=20,
 ):
     """
     Draw an arc to show the angle between two points relative to a vertex.
@@ -68,6 +73,16 @@ def _draw_angle_arc(
         # Plot the square
         ax.plot(x, y, "k-", linewidth=1)
 
+        if vertex_label:
+            ax.text(
+                x=vertex[0] - u1,
+                y=vertex[1] - u2,
+                s=f"${vertex_label}$",
+                fontsize=fontsize,
+                ha="center",
+                va="center",
+            )
+
     else:
         # Ensure proper angle range for drawing the smaller angle
         if abs(angle2 - angle1) > np.pi:
@@ -120,6 +135,16 @@ def _draw_angle_arc(
                 va = "top"
             ax.text(x, y, angle_str, fontsize=fontsize, ha="center", va="center")
 
+            if vertex_label:
+                ax.text(
+                    x=vertex[0] - u1,
+                    y=vertex[1] - u2,
+                    s=f"${vertex_label}$",
+                    fontsize=fontsize,
+                    ha=ha,
+                    va=va,
+                )
+
 
 # def _label_vertices(points, labels=["A", "B", "C"]):
 
@@ -138,6 +163,7 @@ def draw_triangle(
     color=(0, 100 / 255, 140 / 255),
     fontsize=20,
     label_angles=(True, True, True),
+    vertex_labels=("A", "B", "C"),
 ):
     import sympy
     import plotmath
@@ -160,7 +186,7 @@ def draw_triangle(
         color=color,
     )
 
-    for vertex, label_angle in zip(points, label_angles):
+    for vertex, label_angle, vertex_label in zip(points, label_angles, vertex_labels):
         other_points = [point for point in points if point != vertex]
 
         _draw_angle_arc(
@@ -169,6 +195,7 @@ def draw_triangle(
             radius=radius,
             show_angle_value=label_angle,
             fontsize=fontsize,
+            vertex_label=vertex_label,
         )
 
     ax = plotmath.gca()
