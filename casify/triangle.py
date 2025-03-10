@@ -1,4 +1,6 @@
-def _draw_angle_arc(vertex, *other_points, radius=0.4, show_angle_value=False):
+def _draw_angle_arc(
+    vertex, *other_points, radius=0.4, show_angle_value=False, fontsize=20
+):
     """
     Draw an arc to show the angle between two points relative to a vertex.
     For right angles (90 degrees), draws a small square instead.
@@ -90,10 +92,11 @@ def _draw_angle_arc(vertex, *other_points, radius=0.4, show_angle_value=False):
             # Calculate text position
             u1 = v1 / np.linalg.norm(v1)
             u2 = v2 / np.linalg.norm(v2)
-            text_pos = vertex + 1.2 * radius * (u1 + u2)
+            x = vertex[0] + 1.2 * radius * 0.5 * (np.cos(angle1) + np.cos(angle2))
+            y = vertex[1] + 1.2 * radius * 0.5 * (np.sin(angle1) + np.sin(angle2))
 
             # Plot the angle value
-            ax.text(text_pos[0], text_pos[1], angle_str, fontsize=20)
+            ax.text(x, y, angle_str, fontsize=fontsize)
 
 
 # def _label_vertices(points, labels=["A", "B", "C"]):
