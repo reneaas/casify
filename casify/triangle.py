@@ -106,6 +106,16 @@ def _draw_angle_arc(
         # Draw the arc
         ax.plot(x, y, "k-", linewidth=1)
 
+        # Calculate text position
+        unit_vector = np.array(
+            [
+                2 * radius * 0.5 * (np.cos(angle1) + np.cos(angle2)),
+                2 * radius * 0.5 * (np.sin(angle1) + np.sin(angle2)),
+            ]
+        )
+        x = vertex[0] + unit_vector[0]
+        y = vertex[1] + unit_vector[1]
+
         if show_angle_value:
             # Calculate angle value
             angle_deg = np.degrees(angle)
@@ -113,16 +123,6 @@ def _draw_angle_arc(
                 angle_str = f"${int(round(angle_deg))}^\\circ$"
             else:
                 angle_str = f"${angle_deg:.2f}^\\circ$"
-
-            # Calculate text position
-            unit_vector = np.array(
-                [
-                    2 * radius * 0.5 * (np.cos(angle1) + np.cos(angle2)),
-                    2 * radius * 0.5 * (np.sin(angle1) + np.sin(angle2)),
-                ]
-            )
-            x = vertex[0] + unit_vector[0]
-            y = vertex[1] + unit_vector[1]
 
             # Plot the angle value
             # Determine text alignment based on position relative to vertex
@@ -146,15 +146,15 @@ def _draw_angle_arc(
                 va = "top"
             ax.text(x, y, angle_str, fontsize=fontsize, ha="center", va="center")
 
-            if vertex_label:
-                ax.text(
-                    x=vertex[0] - 0.5 * unit_vector[0],
-                    y=vertex[1] - 0.5 * unit_vector[1],
-                    s=f"${vertex_label}$",
-                    fontsize=fontsize,
-                    ha=ha,
-                    va=va,
-                )
+        if vertex_label:
+            ax.text(
+                x=vertex[0] - 0.5 * unit_vector[0],
+                y=vertex[1] - 0.5 * unit_vector[1],
+                s=f"${vertex_label}$",
+                fontsize=fontsize,
+                ha=ha,
+                va=va,
+            )
 
 
 # def _label_vertices(points, labels=["A", "B", "C"]):
