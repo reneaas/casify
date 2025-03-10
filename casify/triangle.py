@@ -137,6 +137,7 @@ def draw_triangle(
     show=True,
     color=(0, 100 / 255, 140 / 255),
     fontsize=20,
+    label_angles=(True, True, True),
 ):
     import sympy
     import plotmath
@@ -159,14 +160,14 @@ def draw_triangle(
         color=color,
     )
 
-    for vertex in points:
+    for vertex, label_angle in zip(points, label_angles:
         other_points = [point for point in points if point != vertex]
 
         _draw_angle_arc(
             vertex,
             *other_points,
             radius=radius,
-            show_angle_value=True,
+            show_angle_value=label_angle,
             fontsize=fontsize,
         )
 
