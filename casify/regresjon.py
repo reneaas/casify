@@ -34,11 +34,11 @@ class RegresjonModell(Funksjon):
 
         if definisjonsmengde is not None:
             xmin, xmax = definisjonsmengde
-            if xmin != 0:
-                xmax = xmax + xstep
-                xmin = xmin - xstep
-            else:
-                xmax = xmax + xstep
+            # if xmin != 0:
+            #     xmax = xmax + xstep
+            #     xmin = xmin - xstep
+            # else:
+            #     xmax = xmax + xstep
 
             x_vals = numpy.linspace(xmin, xmax, 1024)
 
@@ -53,8 +53,15 @@ class RegresjonModell(Funksjon):
             n = ymax // ystep + 2
             ymax = n * ystep
 
+            if xmin != 0:
+                xmax = xmax + xstep
+                xmin = xmin - xstep
+            else:
+                xmax = xmax + xstep
+
         else:
             xmin, xmax = (-6, 6)
+            definisjonsmengde = (xmin, xmax)
             ymin, ymax = (-6, 6)
 
         fn_label = "y = " + sympy.latex(self._f_expr, mul_symbol="dot")
@@ -62,8 +69,8 @@ class RegresjonModell(Funksjon):
         fig, ax = plotmath.plot(
             functions=[numpy_func],
             fn_labels=[fn_label],
-            xmin=xmin,
-            xmax=xmax,
+            xmin=definisjonsmengde[0],
+            xmax=definisjonsmengde[1],
             ymin=ymin,
             ymax=ymax,
             ticks=True,
