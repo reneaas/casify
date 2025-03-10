@@ -224,18 +224,22 @@ def draw_triangle(
             dx = points[1].x - points[0].x
             dy = points[1].y - points[0].y
 
-            if dx == 0 or dy == 0:
+            if dx == 0:
                 ha = "center"
                 va = "bottom"
-            elif dy / dx > 0:
+            elif dy == 0:  # Should be adjust to account for the angle of the side
                 ha = "left"
-                va = "top"
-            elif dy / dx < 0:
+                va = "center"
+
+            elif dy / dx > 0:
                 ha = "right"
                 va = "top"
+            elif dy / dx < 0:
+                ha = "left"
+                va = "bottom"
             else:
                 ha = "center"
-                va = "bottom"
+                va = "center"
 
             ax.text(
                 x=x,
