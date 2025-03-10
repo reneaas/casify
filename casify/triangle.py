@@ -157,51 +157,6 @@ def _draw_angle_arc(
                 va=va,
             )
 
-    if side_label:
-        # Get the two points that form the side opposite to vertex
-
-        # Calculate midpoint of the side
-        midpoint = np.array([(p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2])
-
-        # Calculate side vector and its length
-        side_vector = np.array(p2) - np.array(p1)
-        side_length = np.linalg.norm(side_vector)
-
-        # Create perpendicular vector (rotate 90 degrees counterclockwise)
-        perp_vector = np.array([-side_vector[1], side_vector[0]])
-        perp_vector = perp_vector / np.linalg.norm(perp_vector)  # Normalize
-
-        # Determine if vertex is above or below the side
-        vertex_to_mid = midpoint - vertex
-        dot_product = np.dot(vertex_to_mid, perp_vector)
-
-        # Offset in the opposite direction of the vertex
-        offset = -np.sign(dot_product) * perp_vector * 0.3
-
-        # Position the label
-        label_pos = midpoint + offset
-
-        # Format the side length
-        if np.abs(side_length - round(side_length)) < 1e-10:
-            side_str = f"${int(round(side_length))}$"
-        else:
-            side_str = f"${side_length:.2f}$"
-
-        # Add the label with automatic alignment
-        ax.text(
-            label_pos[0],
-            label_pos[1],
-            side_str,
-            fontsize=fontsize,
-            ha="center",
-            va="center",
-        )
-
-
-# def _label_vertices(points, labels=["A", "B", "C"]):
-
-#     for point, label in zip(points, labels):
-
 
 def draw_triangle(
     *points,
@@ -255,6 +210,23 @@ def draw_triangle(
             vertex_label=vertex_label,
             side_label=label_side,
         )
+
+    segments = triangle.sides
+
+    for segment, label in zip(segments, label_sides):
+        if label:
+            x, y = segment.midpoint
+            x = x.evalf()
+            y = y.evalf()
+
+            ax.text(
+                x=x,
+                y=y,
+                s=f"${sympy.latex(segment.latex)}$",
+                fontsize=fontsize,
+                ha="center",
+                va="center",
+            )
 
     ax = plotmath.gca()
     ax.axis("equal")
