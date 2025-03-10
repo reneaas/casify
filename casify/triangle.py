@@ -227,23 +227,32 @@ def draw_triangle(
             if dx == 0:
                 ha = "center"
                 va = "bottom"
+                dx = 0
+                dy = -0.5
             elif dy == 0:  # Should be adjust to account for the angle of the side
                 ha = "left"
                 va = "center"
+                dx = -0.5
+                dy = 0
 
             elif dy / dx > 0:
                 ha = "right"
                 va = "top"
+                dx = 0.5
+                dy = 0.5
+
             elif dy / dx < 0:
                 ha = "left"
                 va = "bottom"
+                dx = -0.5
+                dy = -0.5
             else:
                 ha = "center"
                 va = "center"
 
             ax.text(
-                x=x,
-                y=y,
+                x=x + dx,
+                y=y + dy,
                 s=f"${sympy.latex(segment.length)}$",
                 fontsize=fontsize,
                 ha=ha,
