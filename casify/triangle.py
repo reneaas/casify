@@ -82,8 +82,8 @@ def _draw_angle_arc(
 
         if vertex_label:
             ax.text(
-                x=vertex[0] - unit_vector[0],
-                y=vertex[1] - unit_vector[1],
+                x=vertex[0] - 0.5 * unit_vector[0],
+                y=vertex[1] - 0.5 * unit_vector[1],
                 s=f"${vertex_label}$",
                 fontsize=fontsize,
                 ha="center",
@@ -148,8 +148,8 @@ def _draw_angle_arc(
 
             if vertex_label:
                 ax.text(
-                    x=vertex[0] - 0.2 * unit_vector[0],
-                    y=vertex[1] - 0.2 * unit_vector[1],
+                    x=vertex[0] - 0.5 * unit_vector[0],
+                    y=vertex[1] - 0.5 * unit_vector[1],
                     s=f"${vertex_label}$",
                     fontsize=fontsize,
                     ha=ha,
