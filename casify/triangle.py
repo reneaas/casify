@@ -42,14 +42,20 @@ def _draw_angle_arc(vertex, *other_points, radius=0.4):
     if np.abs(angle - np.pi / 2) < 1e-10:
         # Draw a square for right angle
         # Get unit vectors
+
+        katet_len = radius / np.sqrt(2)
+
         u1 = v1 / np.linalg.norm(v1)
         u2 = v2 / np.linalg.norm(v2)
 
+        u1 = u1 * katet_len
+        u2 = u2 * katet_len
+
         # Calculate square corners
         square_points = [
-            vertex + radius * u1,
-            vertex + radius * (u1 + u2),
-            vertex + radius * u2,
+            vertex + u1,
+            vertex + 0.5 * (u1 + u2),
+            vertex + u2,
             vertex,
         ]
 
