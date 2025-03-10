@@ -88,7 +88,9 @@ def _draw_angle_arc(vertex, *other_points, radius=0.4, show_angle_value=False):
             angle_str = f"${angle_deg:.2f}^\\circ$"
 
             # Calculate text position
-            text_pos = vertex + 1.2 * radius * (v1 + v2)
+            u1 = v1 / np.linalg.norm(v1)
+            u2 = v2 / np.linalg.norm(v2)
+            text_pos = vertex + 1.2 * radius * (u1 + u2)
 
             # Plot the angle value
             ax.text(text_pos[0], text_pos[1], angle_str, fontsize=20)
