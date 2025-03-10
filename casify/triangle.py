@@ -136,6 +136,7 @@ def draw_triangle(
     alpha=0.1,
     show=True,
     color=(0, 100 / 255, 140 / 255),
+    fontsize=20,
 ):
     import sympy
     import plotmath
@@ -161,7 +162,13 @@ def draw_triangle(
     for vertex in points:
         other_points = [point for point in points if point != vertex]
 
-        _draw_angle_arc(vertex, *other_points, radius=radius, show_angle_value=True)
+        _draw_angle_arc(
+            vertex,
+            *other_points,
+            radius=radius,
+            show_angle_value=True,
+            fontsize=fontsize,
+        )
 
     ax = plotmath.gca()
     ax.axis("equal")
