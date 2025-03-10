@@ -108,10 +108,14 @@ def _draw_angle_arc(
                 angle_str = f"${angle_deg:.2f}^\\circ$"
 
             # Calculate text position
-            u1 = v1 / np.linalg.norm(v1)
-            u2 = v2 / np.linalg.norm(v2)
-            x = vertex[0] + 2 * radius * 0.5 * (np.cos(angle1) + np.cos(angle2))
-            y = vertex[1] + 2 * radius * 0.5 * (np.sin(angle1) + np.sin(angle2))
+            unit_vector = np.array(
+                [
+                    2 * radius * 0.5 * (np.cos(angle1) + np.cos(angle2)),
+                    2 * radius * 0.5 * (np.sin(angle1) + np.sin(angle2)),
+                ]
+            )
+            x = vertex[0] + unit_vector[0]
+            y = vertex[1] + unit_vector[1]
 
             # Plot the angle value
             # Determine text alignment based on position relative to vertex
@@ -137,8 +141,8 @@ def _draw_angle_arc(
 
             if vertex_label:
                 ax.text(
-                    x=vertex[0] - u1,
-                    y=vertex[1] - u2,
+                    x=vertex[0] - unit_vector[0],
+                    y=vertex[1] - unit_vector[1],
                     s=f"${vertex_label}$",
                     fontsize=fontsize,
                     ha=ha,
