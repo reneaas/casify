@@ -4,6 +4,7 @@ def _draw_angle_arc(
     radius=0.4,
     show_angle_value=False,
     vertex_label=None,
+    side_label=False,
     fontsize=20,
 ):
     """
@@ -156,6 +157,47 @@ def _draw_angle_arc(
                 va=va,
             )
 
+    if side_label:
+        # Get the two points that form the side opposite to vertex
+        p1, p2 = other_points
+
+        # Calculate midpoint of the side
+        midpoint = np.array([(p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2])
+
+        # Calculate side vector and its length
+        side_vector = np.array(p2) - np.array(p1)
+        side_length = np.linalg.norm(side_vector)
+
+        # Create perpendicular vector (rotate 90 degrees counterclockwise)
+        perp_vector = np.array([-side_vector[1], side_vector[0]])
+        perp_vector = perp_vector / np.linalg.norm(perp_vector)  # Normalize
+
+        # Determine if vertex is above or below the side
+        vertex_to_mid = midpoint - vertex
+        dot_product = np.dot(vertex_to_mid, perp_vector)
+
+        # Offset in the opposite direction of the vertex
+        offset = -np.sign(dot_product) * perp_vector * 0.3
+
+        # Position the label
+        label_pos = midpoint + offset
+
+        # Format the side length
+        if np.abs(side_length - round(side_length)) < 1e-10:
+            side_str = f"${int(round(side_length))}$"
+        else:
+            side_str = f"${side_length:.2f}$"
+
+        # Add the label with automatic alignment
+        ax.text(
+            label_pos[0],
+            label_pos[1],
+            side_str,
+            fontsize=fontsize,
+            ha="center",
+            va="center",
+        )
+
 
 # def _label_vertices(points, labels=["A", "B", "C"]):
 
@@ -175,6 +217,7 @@ def draw_triangle(
     fontsize=20,
     label_angles=(True, True, True),
     vertex_labels=("A", "B", "C"),
+    label_sides=(True, True, True),
 ):
     import sympy
     import plotmath
@@ -188,6 +231,8 @@ def draw_triangle(
     else:
         triangle = sympy.Triangle(*points)
 
+    side_lengths = [side.length for side in triangle.sides]
+
     points = [(point.x.evalf(), point.y.evalf()) for point in triangle.vertices]
 
     plotmath.plot_polygon(
@@ -197,10 +242,11 @@ def draw_triangle(
         color=color,
     )
 
-    for vertex, label_angle, vertex_label in zip(points, label_angles, vertex_labels):
+    for vertex, label_angle, vertex_label, label_side in zip(
+        points, label_angles, vertex_labels, label_sides
+    ):
         other_points = [point for point in points if point != vertex]
 
-        print(vertex_label)
         _draw_angle_arc(
             vertex,
             *other_points,
@@ -208,6 +254,7 @@ def draw_triangle(
             show_angle_value=label_angle,
             fontsize=fontsize,
             vertex_label=vertex_label,
+            side_label=label_side,
         )
 
     ax = plotmath.gca()
