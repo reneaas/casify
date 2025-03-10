@@ -215,7 +215,7 @@ def draw_triangle(
 
     for segment, label in zip(segments, label_sides):
         if label:
-            x, y = segment.midpoint
+            x, y = tuple(segment.midpoint)
             x = x.evalf()
             y = y.evalf()
 
