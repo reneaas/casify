@@ -223,7 +223,7 @@ def draw_triangle(
             ax.text(
                 x=x,
                 y=y,
-                s=f"${sympy.latex(segment.latex)}$",
+                s=f"${sympy.latex(segment.length)}$",
                 fontsize=fontsize,
                 ha="center",
                 va="center",
