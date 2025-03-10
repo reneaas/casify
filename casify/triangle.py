@@ -220,13 +220,25 @@ def draw_triangle(
             x = x.evalf()
             y = y.evalf()
 
+            dx = segment.p2.x - segment.p1.x
+            dy = segment.p2.y - segment.p1.y
+            if dy / dx > 0:
+                ha = "left"
+                va = "bottom"
+            elif dy / dx < 0:
+                ha = "right"
+                va = "top"
+            else:
+                ha = "center"
+                va = "bottom"
+
             ax.text(
                 x=x,
                 y=y,
                 s=f"${sympy.latex(segment.length)}$",
                 fontsize=fontsize,
-                ha="center",
-                va="center",
+                ha=ha,
+                va=va,
             )
 
     ax.axis("equal")
