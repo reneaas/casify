@@ -175,6 +175,7 @@ def draw_triangle(
 ):
     import sympy
     import plotmath
+    import numpy as np
 
     if sss:
         triangle = sympy.Triangle(sss=sss)
@@ -224,6 +225,8 @@ def draw_triangle(
             dx = points[1].x - points[0].x
             dy = points[1].y - points[0].y
 
+            unit_vector = np.array([dy, -dx]) / np.linalg.norm([dx, dy])
+
             if dx == 0:
                 ha = "center"
                 va = "bottom"
@@ -245,8 +248,8 @@ def draw_triangle(
                 va = "center"
 
             ax.text(
-                x=x,
-                y=y,
+                x=x + radius * unit_vector[0],
+                y=y + radius * unit_vector[1],
                 s=f"${sympy.latex(segment.length)}$",
                 fontsize=fontsize,
                 ha=ha,
