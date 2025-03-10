@@ -92,6 +92,7 @@ def draw_triangle(
     radius=0.4,
     alpha=0.1,
     show=True,
+    color=(0, 100 / 255, 140 / 255),
 ):
     import sympy
     import plotmath
@@ -107,7 +108,12 @@ def draw_triangle(
 
     points = [(point.x.evalf(), point.y.evalf()) for point in triangle.vertices]
 
-    plotmath.plot_polygon(*points, show_vertices=show_vertices, alpha=alpha)
+    plotmath.plot_polygon(
+        *points,
+        show_vertices=show_vertices,
+        alpha=alpha,
+        color=color,
+    )
 
     for vertex in points:
         other_points = [point for point in points if point != vertex]
