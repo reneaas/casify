@@ -1,4 +1,4 @@
-def _draw_angle_arc(ax, vertex, *other_points, radius=0.4):
+def _draw_angle_arc(vertex, *other_points, radius=0.4):
     """
     Draw an arc to show the angle between two points relative to a vertex.
     For right angles (90 degrees), draws a small square instead.
@@ -15,6 +15,9 @@ def _draw_angle_arc(ax, vertex, *other_points, radius=0.4):
         Radius of the arc or size of the square for right angles
     """
     import numpy as np
+    import plotmath
+
+    ax = plotmath.gca()
 
     # Convert points to numpy arrays with float values
     vertex = np.array(vertex, dtype=float)
