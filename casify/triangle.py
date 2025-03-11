@@ -100,9 +100,14 @@ def _draw_angle_arc(
                 angle1 -= 2 * np.pi
 
         # Create arc points
-        theta = np.linspace(angle1, angle2, 100)
-        x = vertex[0] + radius * np.cos(theta)
-        y = vertex[1] + radius * np.sin(theta)
+        if np.degrees(angle) > 90:
+            theta = np.linspace(angle1, angle2, 100)
+            x = vertex[0] + 0.5 * radius * np.cos(theta)
+            y = vertex[1] + 0.5 * radius * np.sin(theta)
+        else:
+            theta = np.linspace(angle1, angle2, 100)
+            x = vertex[0] + radius * np.cos(theta)
+            y = vertex[1] + radius * np.sin(theta)
 
         # Draw the arc
         if show_angle_value:
