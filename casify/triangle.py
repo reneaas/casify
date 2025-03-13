@@ -187,7 +187,7 @@ def draw_triangle(
     label_angles=(True, True, True),
     vertex_labels=("A", "B", "C"),
     label_sides=(True, True, True),
-    numerical_lenghts=False,
+    numerical_len=False,
 ):
     import sympy
     import plotmath
@@ -262,7 +262,7 @@ def draw_triangle(
                 ha = "center"
                 va = "center"
 
-            if numerical_lenghts:
+            if numerical_len:
                 ax.text(
                     x=x + 0.5 * radius * unit_vector[0],
                     y=y + 0.5 * radius * unit_vector[1],
