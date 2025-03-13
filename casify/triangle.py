@@ -2,7 +2,7 @@ def _draw_angle_arc(
     vertex,
     *other_points,
     radius=0.4,
-    show_angle_value=False,
+    show_angle=False,
     vertex_label=None,
     side_label=False,
     fontsize=20,
@@ -110,7 +110,7 @@ def _draw_angle_arc(
             y = vertex[1] + radius * np.sin(theta)
 
         # Draw the arc
-        if show_angle_value:
+        if show_angle:
             ax.plot(x, y, "k-", linewidth=1)
 
         # Calculate text position
@@ -150,8 +150,18 @@ def _draw_angle_arc(
         else:
             va = "top"
 
-        if show_angle_value:
-            ax.text(x, y, angle_str, fontsize=fontsize, ha="center", va="center")
+        if show_angle:
+            if show_angle is True:
+                ax.text(x, y, angle_str, fontsize=fontsize, ha="center", va="center")
+            else:
+                ax.text(
+                    x=x,
+                    y=y,
+                    s=f"${show_angle}$",
+                    fontsize=fontsize,
+                    ha="center",
+                    va="center",
+                )
 
         if vertex_label:
             ax.text(
@@ -212,7 +222,7 @@ def draw_triangle(
             vertex,
             *other_points,
             radius=radius,
-            show_angle_value=label_angle,
+            show_angle=label_angle,
             fontsize=fontsize,
             vertex_label=vertex_label,
             side_label=label_side,
