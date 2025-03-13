@@ -4,7 +4,6 @@ def _draw_angle_arc(
     radius=0.4,
     show_angle=False,
     vertex_label=None,
-    side_label=False,
     fontsize=20,
 ):
     """
@@ -188,6 +187,7 @@ def draw_triangle(
     label_angles=(True, True, True),
     vertex_labels=("A", "B", "C"),
     label_sides=(True, True, True),
+    numerical_lenghts=False,
 ):
     import sympy
     import plotmath
@@ -225,7 +225,6 @@ def draw_triangle(
             show_angle=label_angle,
             fontsize=fontsize,
             vertex_label=vertex_label,
-            side_label=label_side,
         )
 
     segments = triangle.sides
@@ -263,14 +262,28 @@ def draw_triangle(
                 ha = "center"
                 va = "center"
 
-            ax.text(
-                x=x + 0.5 * radius * unit_vector[0],
-                y=y + 0.5 * radius * unit_vector[1],
-                s=f"${sympy.latex(segment.length)}$" if label is True else f"${label}$",
-                fontsize=fontsize,
-                ha=ha,
-                va=va,
-            )
+            if numerical_lenghts:
+                ax.text(
+                    x=x + 0.5 * radius * unit_vector[0],
+                    y=y + 0.5 * radius * unit_vector[1],
+                    s=f"${segment.length.evalf() :.2f}$",
+                    fontsize=fontsize,
+                    ha=ha,
+                    va=va,
+                )
+            else:
+                ax.text(
+                    x=x + 0.5 * radius * unit_vector[0],
+                    y=y + 0.5 * radius * unit_vector[1],
+                    s=(
+                        f"${sympy.latex(segment.length)}$"
+                        if label is True
+                        else f"${label}$"
+                    ),
+                    fontsize=fontsize,
+                    ha=ha,
+                    va=va,
+                )
 
     ax.axis("equal")
     ax.axis("off")
