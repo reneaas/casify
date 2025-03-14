@@ -188,6 +188,7 @@ def draw_triangle(
     vertex_labels=("A", "B", "C"),
     label_sides=(True, True, True),
     numerical_len=False,
+    axis_off=True,
 ):
     import sympy
     import plotmath
@@ -286,7 +287,8 @@ def draw_triangle(
                 )
 
     ax.axis("equal")
-    ax.axis("off")
+    if axis_off:
+        ax.axis("off")
 
     if show:
         plotmath.show()
