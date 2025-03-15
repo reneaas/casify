@@ -115,8 +115,8 @@ def _draw_angle_arc(
         # Calculate text position
         unit_vector = np.array(
             [
-                2 * radius * 0.5 * (np.cos(angle1) + np.cos(angle2)),
-                2 * radius * 0.5 * (np.sin(angle1) + np.sin(angle2)),
+                radius * 0.5 * (np.cos(angle1) + np.cos(angle2)),
+                radius * 0.5 * (np.sin(angle1) + np.sin(angle2)),
             ]
         )
         x = vertex[0] + unit_vector[0]
@@ -264,14 +264,24 @@ def draw_triangle(
                 va = "center"
 
             if numerical_len:
-                ax.text(
-                    x=x + 0.5 * radius * unit_vector[0],
-                    y=y + 0.5 * radius * unit_vector[1],
-                    s=f"${segment.length.evalf() :.2f}$",
-                    fontsize=fontsize,
-                    ha=ha,
-                    va=va,
-                )
+                if abs(segment.length - round(segment.length)) < 1e-8:
+                    ax.text(
+                        x=x + 0.5 * radius * unit_vector[0],
+                        y=y + 0.5 * radius * unit_vector[1],
+                        s=f"${segment.length.evalf() :.0f}$",
+                        fontsize=fontsize,
+                        ha=ha,
+                        va=va,
+                    )
+                else:
+                    ax.text(
+                        x=x + 0.5 * radius * unit_vector[0],
+                        y=y + 0.5 * radius * unit_vector[1],
+                        s=f"${segment.length.evalf() :.2f}$",
+                        fontsize=fontsize,
+                        ha=ha,
+                        va=va,
+                    )
             else:
                 ax.text(
                     x=x + 0.5 * radius * unit_vector[0],
