@@ -115,8 +115,8 @@ def _draw_angle_arc(
         # Calculate text position
         unit_vector = np.array(
             [
-                radius * 0.5 * (np.cos(angle1) + np.cos(angle2)),
-                radius * 0.5 * (np.sin(angle1) + np.sin(angle2)),
+                1.2 * radius * 0.5 * (np.cos(angle1) + np.cos(angle2)),
+                1.2 * radius * 0.5 * (np.sin(angle1) + np.sin(angle2)),
             ]
         )
         x = vertex[0] + unit_vector[0]
