@@ -264,7 +264,17 @@ def draw_triangle(
                 va = "center"
 
             if numerical_len:
-                if abs(segment.length - round(segment.length)) < 1e-8:
+                if isinstance(label, str):
+                    ax.text(
+                        x=x + 0.5 * radius * unit_vector[0],
+                        y=y + 0.5 * radius * unit_vector[1],
+                        s=f"${label}$",
+                        fontsize=fontsize,
+                        ha=ha,
+                        va=va,
+                    )
+
+                elif abs(segment.length - round(segment.length)) < 1e-8:
                     ax.text(
                         x=x + 0.5 * radius * unit_vector[0],
                         y=y + 0.5 * radius * unit_vector[1],
