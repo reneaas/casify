@@ -182,13 +182,13 @@ def draw_triangle(
     radius=0.4,
     alpha=0.1,
     show=True,
-    color=(0, 100 / 255, 140 / 255),
     fontsize=20,
     label_angles=(True, True, True),
     vertex_labels=("A", "B", "C"),
     label_sides=(True, True, True),
     numerical_len=False,
     axis_off=True,
+    color=None,
 ):
     import sympy
     import plotmath
@@ -207,6 +207,8 @@ def draw_triangle(
 
     points = [(point.x.evalf(), point.y.evalf()) for point in triangle.vertices]
 
+    if color is None:
+        color = plotmath.COLORS.get("blue")
     plotmath.plot_polygon(
         *points,
         show_vertices=show_vertices,
