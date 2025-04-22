@@ -1,178 +1,3 @@
-def _draw_angle_arc(
-    vertex,
-    *other_points,
-    radius=0.4,
-    show_angle=False,
-    vertex_label=None,
-    fontsize=20,
-):
-    """
-    Draw an arc to show the angle between two points relative to a vertex.
-    For right angles (90 degrees), draws a small square instead.
-
-    Parameters:
-    -----------
-    ax : matplotlib.axes.Axes
-        The axes to draw on
-    vertex : tuple
-        The vertex point (x, y)
-    p1, p2 : tuple
-        The two points forming the angle with the vertex
-    radius : float
-        Radius of the arc or size of the square for right angles
-    """
-    import numpy as np
-    import plotmath
-
-    ax = plotmath.gca()
-
-    # Convert points to numpy arrays with float values
-    vertex = np.array(vertex, dtype=float)
-    p1, p2 = other_points
-    p1 = np.array(p1, dtype=float)
-    p2 = np.array(p2, dtype=float)
-
-    # Calculate vectors from vertex to points
-    v1 = p1 - vertex
-    v2 = p2 - vertex
-
-    # Calculate angles
-    angle1 = np.arctan2(v1[1], v1[0])
-    angle2 = np.arctan2(v2[1], v2[0])
-
-    # Calculate the angle between vectors
-    dot_product = np.dot(v1, v2)
-    norms = np.linalg.norm(v1) * np.linalg.norm(v2)
-    angle = np.arccos(np.clip(dot_product / norms, -1.0, 1.0))
-
-    # Check if it's approximately a right angle (90 degrees = π/2 radians)
-    if np.abs(angle - np.pi / 2) < 1e-10:
-        # Draw a square for right angle
-        # Get unit vectors
-
-        katet_len = radius / np.sqrt(2)
-
-        u1 = v1 / np.linalg.norm(v1)
-        u2 = v2 / np.linalg.norm(v2)
-
-        u1 = u1 * katet_len
-        u2 = u2 * katet_len
-
-        # Calculate square corners
-        square_points = [
-            vertex + u1,
-            vertex + (u1 + u2),
-            vertex + u2,
-            vertex,
-        ]
-
-        # Convert to separate x and y arrays
-        x = [p[0] for p in square_points]
-        y = [p[1] for p in square_points]
-
-        # Plot the square
-        ax.plot(x, y, "k-", linewidth=1)
-
-        unit_vector = np.array(
-            [
-                2 * radius * 0.5 * (np.cos(angle1) + np.cos(angle2)),
-                2 * radius * 0.5 * (np.sin(angle1) + np.sin(angle2)),
-            ]
-        )
-
-        if vertex_label:
-            ax.text(
-                x=vertex[0] - 0.5 * unit_vector[0],
-                y=vertex[1] - 0.5 * unit_vector[1],
-                s=f"${vertex_label}$",
-                fontsize=fontsize,
-                ha="center",
-                va="center",
-            )
-
-    else:
-        # Ensure proper angle range for drawing the smaller angle
-        if abs(angle2 - angle1) > np.pi:
-            if angle2 > angle1:
-                angle2 -= 2 * np.pi
-            else:
-                angle1 -= 2 * np.pi
-
-        # Create arc points
-        if np.degrees(angle) > 90:
-            theta = np.linspace(angle1, angle2, 100)
-            x = vertex[0] + 0.5 * radius * np.cos(theta)
-            y = vertex[1] + 0.5 * radius * np.sin(theta)
-        else:
-            theta = np.linspace(angle1, angle2, 100)
-            x = vertex[0] + radius * np.cos(theta)
-            y = vertex[1] + radius * np.sin(theta)
-
-        # Draw the arc
-        if show_angle:
-            ax.plot(x, y, "k-", linewidth=1)
-
-        # Calculate text position
-        unit_vector = np.array(
-            [
-                1.5 * radius * 0.5 * (np.cos(angle1) + np.cos(angle2)),
-                1.5 * radius * 0.5 * (np.sin(angle1) + np.sin(angle2)),
-            ]
-        )
-        x = vertex[0] + unit_vector[0]
-        y = vertex[1] + unit_vector[1]
-
-        angle_deg = np.degrees(angle)
-        if np.abs(angle_deg - round(angle_deg)) < 1e-8:
-            angle_str = f"${int(round(angle_deg))}^\\circ$"
-        else:
-            angle_str = f"${angle_deg:.2f}^\\circ$"
-
-        # Plot the angle value
-        # Determine text alignment based on position relative to vertex
-        dx = x - vertex[0]
-        dy = y - vertex[1]
-
-        # Set horizontal alignment
-        if abs(dx) < 0.1:  # Near vertical
-            ha = "center"
-        elif dx > 0:
-            ha = "left"
-        else:
-            ha = "right"
-
-        # Set vertical alignment
-        if abs(dy) < 0.1:  # Near horizontal
-            va = "center"
-        elif dy > 0:
-            va = "bottom"
-        else:
-            va = "top"
-
-        if show_angle:
-            if show_angle is True:
-                ax.text(x, y, angle_str, fontsize=fontsize, ha="center", va="center")
-            else:
-                ax.text(
-                    x=x,
-                    y=y,
-                    s=f"${show_angle}$",
-                    fontsize=fontsize,
-                    ha="center",
-                    va="center",
-                )
-
-        if vertex_label:
-            ax.text(
-                x=vertex[0] - 0.5 * unit_vector[0],
-                y=vertex[1] - 0.5 * unit_vector[1],
-                s=f"${vertex_label}$",
-                fontsize=fontsize,
-                ha=ha,
-                va=va,
-            )
-
-
 def draw_triangle(
     *points,
     sss=None,
@@ -193,19 +18,20 @@ def draw_triangle(
     """
     Draw a triangle with sensible angle‑arc radii and well‑placed labels.
 
-    • `label_angles`:  True  → write the numeric angle value
-                       str   → write that string
+    • `label_angles`:  True  → numeric angle value
+                       str   → that string
                        False → nothing
-    • Side labels are always placed **outside** the triangle.
+    • Vertex labels are placed just outside the triangle (0.7 × arc radius).
+    • Angle labels sit on the bisector at 1.60 × arc radius, clearing the arc.
     """
 
-    # ---------------------------------------------------------------- imports
+    # ───────────────────────────── imports ─────────────────────────────
     import numpy as np
     import sympy as sp
     from matplotlib.patches import Arc
-    import plotmath  # <- your helper library
+    import plotmath  # your helper library
 
-    # ----------------------------------------------------- tiny helpers
+    # ─────────────────────── utility helpers ───────────────────────────
     def _to_xy(pt):
         return float(pt.x.evalf()), float(pt.y.evalf())
 
@@ -220,36 +46,34 @@ def draw_triangle(
             r = min(r, 0.8 * in_r)
         return r
 
-    # --------------------- angle‑arc / angle‑label drawing ------------------
+    # ────────────────── angle‑arc / angle‑label ────────────────────────
     def _draw_angle_arc(ax, v, p1, p2, r, label):
         """
         Draw the interior angle at `v` with radius `r`.
         `label` controls the text:
-            • False → no text
-            • True  → numeric angle value
-            • str   → that string
+            • False → no label
+            • True  → numeric angle in degrees
+            • str   → custom string
         """
         v, p1, p2 = map(np.asarray, (v, p1, p2))
         v1, v2 = p1 - v, p2 - v
 
-        # raw angles for the arc endpoints
         a1 = np.degrees(np.arctan2(v1[1], v1[0]))
         a2 = np.degrees(np.arctan2(v2[1], v2[0]))
         sweep = (a2 - a1) % 360
         if sweep > 180:
-            sweep -= 360  # interior sweep
+            sweep -= 360
         ang_rad = np.radians(abs(sweep))
 
-        # right‑angle test
         right_angle = abs(ang_rad - np.pi / 2) < 1e-10
 
-        if right_angle:  # draw the little square
+        if right_angle:
             kat = r / np.sqrt(2)
             u1 = _unit(v1) * kat
             u2 = _unit(v2) * kat
-            square = np.array([v, v + u1, v + u1 + u2, v + u2, v])
-            ax.plot(square[:, 0], square[:, 1], "k-", lw=1.5)
-        else:  # ordinary arc
+            sq = np.array([v, v + u1, v + u1 + u2, v + u2, v])
+            ax.plot(sq[:, 0], sq[:, 1], "k-", lw=1.5)
+        else:
             ax.add_patch(
                 Arc(
                     v,
@@ -263,23 +87,21 @@ def draw_triangle(
                 )
             )
 
-        # ------------------------------------------------ text on bisector
+        # ───────────── text on the bisector ─────────────
         if label:
-            # choose the string to display
-            if label is True:
-                angle_deg = np.degrees(ang_rad)
-                angle_txt = (
-                    f"{int(round(angle_deg))}"
-                    if abs(angle_deg - round(angle_deg)) < 1e-8
-                    else f"{angle_deg:.2f}"
+            if label is True:  # numeric
+                deg = np.degrees(ang_rad)
+                txt = (
+                    f"{int(round(deg))}"
+                    if abs(deg - round(deg)) < 1e-8
+                    else f"{deg:.2f}"
                 )
-                text = rf"${angle_txt}^\circ$"
-            else:  # a custom string
+                text = rf"${txt}^\circ$"
+            else:  # custom string
                 text = rf"${label}$"
 
-            # position: 1.25 r along the angle‑bisector
             bis = _unit(v1 / np.linalg.norm(v1) + v2 / np.linalg.norm(v2))
-            pos = v + bis * (1.25 * r)
+            pos = v + bis * (1.60 * r)  # ← moved inwards (was 1.25 r)
             ax.text(
                 pos[0],
                 pos[1],
@@ -289,7 +111,7 @@ def draw_triangle(
                 fontsize=fontsize,
             )
 
-    # --------------------------------------------------- build Triangle obj
+    # ─────────────────── build the Triangle ────────────────────────────
     if sss:
         tri = sp.Triangle(sss=sss)
     elif asa:
@@ -313,14 +135,14 @@ def draw_triangle(
 
     centroid = np.mean(verts, axis=0)
 
-    # -------------------------------------------- draw the polygon shell
+    # ─────────────────── draw the polygon shell ────────────────────────
     if color is None:
         color = plotmath.COLORS.get("blue")
 
     plotmath.plot_polygon(*verts, show_vertices=show_vertices, alpha=alpha, color=color)
     ax = plotmath.gca()
 
-    # ------------------------------------------------- angles & vertices
+    # ───────────────────── angles & vertex names ───────────────────────
     for i, (v, show_ang, vlab) in enumerate(zip(verts, label_angles, vertex_labels)):
         p1, p2 = verts[(i + 1) % 3], verts[(i + 2) % 3]
         adj1 = np.linalg.norm(np.array(v) - np.array(p1))
@@ -329,16 +151,16 @@ def draw_triangle(
 
         _draw_angle_arc(ax, v, p1, p2, r_i, show_ang)
 
-        # vertex name, pushed outwards
+        # closer vertex label (0.7 r_i)
         ax.text(
-            *(np.array(v) + _unit(np.array(v) - centroid) * (1.4 * r_i)),
+            *(np.array(v) + _unit(np.array(v) - centroid) * (0.7 * r_i)),
             rf"${vlab}$",
             ha="center",
             va="center",
             fontsize=fontsize,
         )
 
-    # ------------------------------------------------------- side labels
+    # ───────────────────────── side labels ─────────────────────────────
     for seg, lab in zip(tri.sides, label_sides):
         if not lab:
             continue
@@ -347,16 +169,15 @@ def draw_triangle(
         mid = (p + q) / 2
         edge = q - p
 
-        # exterior normal: point *away* from the centroid
+        # outward normal (away from centroid)
         normal = np.array([-edge[1], edge[0]])
-        if np.dot(normal, centroid - mid) > 0:  # pointing inward
+        if np.dot(normal, centroid - mid) > 0:
             normal *= -1
         n_hat = _unit(normal)
 
-        offset = 0.07 * float(seg.length.evalf())  # 7 % of side length
+        offset = 0.07 * float(seg.length.evalf())
 
-        # decide the text to show
-        if lab is True:  # use SymPy symbolic length
+        if lab is True:
             txt = rf"${sp.latex(seg.length)}$"
         else:
             txt = rf"${lab}$"
@@ -373,7 +194,7 @@ def draw_triangle(
             fontsize=fontsize,
         )
 
-    # ------------------------------------------------------- finish up
+    # ─────────────────────────── finish up ─────────────────────────────
     ax.axis("equal")
     if axis_off:
         ax.axis("off")
