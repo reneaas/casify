@@ -250,7 +250,18 @@ def draw_triangle(
             square = np.array([v, v + u1, v + u1 + u2, v + u2, v])
             ax.plot(square[:, 0], square[:, 1], "k-", lw=1.5)
         else:  # ordinary arc
-            ax.add_patch(Arc(v, 2 * r, 2 * r, 0, a1, a1 + sweep, lw=1.5, fill=False))
+            ax.add_patch(
+                Arc(
+                    v,
+                    2 * r,
+                    2 * r,
+                    angle=0,
+                    theta1=a1,
+                    theta2=a1 + sweep,
+                    lw=1.5,
+                    fill=False,
+                )
+            )
 
         # ------------------------------------------------ text on bisector
         if label:
