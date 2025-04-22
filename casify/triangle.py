@@ -191,91 +191,94 @@ def draw_triangle(
     color=None,
 ):
     """
-    Draws a triangle with intelligently‑sized angle arcs and neatly placed labels.
+    Draw a triangle with sensible angle‑arc radii and well‑placed labels.
 
-    All public parameters are exactly the same as in the original version.
+    • `label_angles`:  True  → write the numeric angle value
+                       str   → write that string
+                       False → nothing
+    • Side labels are always placed **outside** the triangle.
     """
 
-    ###########################################################################
-    # Standard imports
-    ###########################################################################
+    # ---------------------------------------------------------------- imports
     import numpy as np
     import sympy as sp
-    import matplotlib.pyplot as plt
     from matplotlib.patches import Arc
+    import plotmath  # <- your helper library
 
-    # ------------------------------------------------------------------ helpers
+    # ----------------------------------------------------- tiny helpers
     def _to_xy(pt):
-        """Return (float(x), float(y)) for any SymPy Point‑like."""
-        return (float(pt.x.evalf()), float(pt.y.evalf()))
-
-    def _angle(p, c):
-        """atan2 angle of vector p‑>c."""
-        return np.degrees(np.arctan2(c[1] - p[1], c[0] - p[0]))
+        return float(pt.x.evalf()), float(pt.y.evalf())
 
     def _unit(v):
-        v = np.asarray(v, dtype=float)
+        v = np.asarray(v, float)
         n = np.linalg.norm(v)
         return v / n if n else v
 
     def _arc_radius(adj1, adj2, in_r):
-        """
-        Pick a radius that is
-            • 18 % of the shorter adjacent side, *and*
-            • no larger than 80 % of the in‑radius.
-        """
         r = 0.18 * min(adj1, adj2)
         if in_r is not None:
             r = min(r, 0.8 * in_r)
         return r
 
-    def _draw_angle_arc(ax, v, p1, p2, r, label, label_text):
+    # --------------------- angle‑arc / angle‑label drawing ------------------
+    def _draw_angle_arc(ax, v, p1, p2, r, label):
         """
-        Draw an angle arc centred at `v` between the rays v→p1 and v→p2
-        with radius `r`; write `label_text` on the bisector when `label`.
+        Draw the interior angle at `v` with radius `r`.
+        `label` controls the text:
+            • False → no text
+            • True  → numeric angle value
+            • str   → that string
         """
-        # vectors
-        v1 = np.array(p1) - np.array(v)
-        v2 = np.array(p2) - np.array(v)
+        v, p1, p2 = map(np.asarray, (v, p1, p2))
+        v1, v2 = p1 - v, p2 - v
 
-        ang1 = np.degrees(np.arctan2(v1[1], v1[0]))
-        ang2 = np.degrees(np.arctan2(v2[1], v2[0]))
-
-        # smallest positive/negative sweep (inside the triangle)
-        sweep = (ang2 - ang1) % 360
+        # raw angles for the arc endpoints
+        a1 = np.degrees(np.arctan2(v1[1], v1[0]))
+        a2 = np.degrees(np.arctan2(v2[1], v2[0]))
+        sweep = (a2 - a1) % 360
         if sweep > 180:
-            sweep -= 360  # go the other way (negative sweep)
+            sweep -= 360  # interior sweep
+        ang_rad = np.radians(abs(sweep))
 
-        # Draw the arc
-        ax.add_patch(
-            Arc(
-                v,
-                width=2 * r,
-                height=2 * r,
-                angle=0,
-                theta1=ang1,
-                theta2=ang1 + sweep,
-                lw=1.5,
-                fill=False,
-            )
-        )
+        # right‑angle test
+        right_angle = abs(ang_rad - np.pi / 2) < 1e-10
 
-        # Label on the angle bisector
+        if right_angle:  # draw the little square
+            kat = r / np.sqrt(2)
+            u1 = _unit(v1) * kat
+            u2 = _unit(v2) * kat
+            square = np.array([v, v + u1, v + u1 + u2, v + u2, v])
+            ax.plot(square[:, 0], square[:, 1], "k-", lw=1.5)
+        else:  # ordinary arc
+            ax.add_patch(Arc(v, 2 * r, 2 * r, 0, a1, a1 + sweep, lw=1.5, fill=False))
+
+        # ------------------------------------------------ text on bisector
         if label:
-            bis_vec = _unit(v1 / np.linalg.norm(v1) + v2 / np.linalg.norm(v2))
-            txt_pos = np.array(v) + bis_vec * (1.25 * r)
+            # choose the string to display
+            if label is True:
+                angle_deg = np.degrees(ang_rad)
+                angle_txt = (
+                    f"{int(round(angle_deg))}"
+                    if abs(angle_deg - round(angle_deg)) < 1e-8
+                    else f"{angle_deg:.2f}"
+                )
+                text = rf"${angle_txt}^\circ$"
+            else:  # a custom string
+                text = rf"${label}$"
+
+            # position: 1.25 r along the angle‑bisector
+            bis = _unit(v1 / np.linalg.norm(v1) + v2 / np.linalg.norm(v2))
+            pos = v + bis * (1.25 * r)
             ax.text(
-                txt_pos[0],
-                txt_pos[1],
-                f"${label_text}$",
+                pos[0],
+                pos[1],
+                text,
                 ha="center",
                 va="center",
                 fontsize=fontsize,
             )
 
-    ###########################################################################
-    # Build the SymPy Triangle object
-    ###########################################################################
+    # --------------------------------------------------- build Triangle obj
     if sss:
         tri = sp.Triangle(sss=sss)
     elif asa:
@@ -285,115 +288,84 @@ def draw_triangle(
     else:
         tri = sp.Triangle(*points)
 
-    # Geometry data -----------------------------------------------------------
     verts_sp = tri.vertices
-    verts = [_to_xy(v) for v in verts_sp]  # plain tuples
+    verts = [_to_xy(v) for v in verts_sp]
     side_lengths = [float(s.length.evalf()) for s in tri.sides]
+
+    # robust in‑radius
     try:
         in_r = float(tri.incircle.radius.evalf())
-    except Exception:  # degenerate triangle, or no incircle
-        in_r = None
+    except Exception:
+        area = float(tri.area.evalf())
+        per = sum(side_lengths)
+        in_r = 2 * area / per if per else None
+
     centroid = np.mean(verts, axis=0)
 
-    # A pleasant stable colour choice
+    # -------------------------------------------- draw the polygon shell
     if color is None:
-        import plotmath
-
         color = plotmath.COLORS.get("blue")
-
-    ###########################################################################
-    # Plot the polygon shell
-    ###########################################################################
-    import plotmath
 
     plotmath.plot_polygon(*verts, show_vertices=show_vertices, alpha=alpha, color=color)
     ax = plotmath.gca()
 
-    ###########################################################################
-    # Angle arcs, angle labels and vertex labels
-    ###########################################################################
-    default_angle_letters = (r"\alpha", r"\beta", r"\gamma")
-
-    for i, (v, show_ang, vlabel) in enumerate(zip(verts, label_angles, vertex_labels)):
-        # indices of the two other vertices
+    # ------------------------------------------------- angles & vertices
+    for i, (v, show_ang, vlab) in enumerate(zip(verts, label_angles, vertex_labels)):
         p1, p2 = verts[(i + 1) % 3], verts[(i + 2) % 3]
-        # adjacent side lengths
         adj1 = np.linalg.norm(np.array(v) - np.array(p1))
         adj2 = np.linalg.norm(np.array(v) - np.array(p2))
-
-        # Arc radius – automatic if radius=None, otherwise honour user value
         r_i = radius if radius is not None else _arc_radius(adj1, adj2, in_r)
 
-        # Draw arc + label
-        _draw_angle_arc(
-            ax,
-            v,
-            p1,
-            p2,
-            r_i,
-            show_ang,
-            default_angle_letters[i] if show_ang is True else show_ang,
-        )
+        _draw_angle_arc(ax, v, p1, p2, r_i, show_ang)
 
-        # Vertex name – outside the triangle
-        vec_out = _unit(np.array(v) - centroid)
+        # vertex name, pushed outwards
         ax.text(
-            *(np.array(v) + vec_out * (1.4 * r_i)),
-            f"${vlabel}$",
+            *(np.array(v) + _unit(np.array(v) - centroid) * (1.4 * r_i)),
+            rf"${vlab}$",
             ha="center",
             va="center",
             fontsize=fontsize,
         )
 
-    ###########################################################################
-    # Side‑length labels
-    ###########################################################################
-    for seg, show_side in zip(tri.sides, label_sides):
-        if not show_side:
+    # ------------------------------------------------------- side labels
+    for seg, lab in zip(tri.sides, label_sides):
+        if not lab:
             continue
 
-        p, q = _to_xy(seg.points[0]), _to_xy(seg.points[1])
-        mid = (np.array(p) + np.array(q)) / 2.0
-        edge_vec = np.array(q) - np.array(p)
+        p, q = map(np.asarray, (_to_xy(seg.points[0]), _to_xy(seg.points[1])))
+        mid = (p + q) / 2
+        edge = q - p
 
-        # interior normal: choose sign so that it points towards the centroid
-        normal = np.array([-edge_vec[1], edge_vec[0]])
-        if np.dot(normal, centroid - mid) < 0:
+        # exterior normal: point *away* from the centroid
+        normal = np.array([-edge[1], edge[0]])
+        if np.dot(normal, centroid - mid) > 0:  # pointing inward
             normal *= -1
         n_hat = _unit(normal)
 
-        offset = 0.07 * float(seg.length.evalf())  # 7 % of that side
+        offset = 0.07 * float(seg.length.evalf())  # 7 % of side length
 
-        # Actual text to write
-        if show_side is True:  # auto label = length symbol
-            text = f"${sp.latex(seg.length)}$"
+        # decide the text to show
+        if lab is True:  # use SymPy symbolic length
+            txt = rf"${sp.latex(seg.length)}$"
         else:
-            text = f"${show_side}$"
+            txt = rf"${lab}$"
 
         if numerical_len:
-            # prettify numeric output
-            num_val = float(seg.length.evalf())
-            text = (
-                f"${num_val:.0f}$"
-                if abs(num_val - round(num_val)) < 1e-8
-                else f"${num_val:.2f}$"
-            )
+            num = float(seg.length.evalf())
+            txt = rf"${num:.0f}$" if abs(num - round(num)) < 1e-8 else rf"${num:.2f}$"
 
         ax.text(
             *(mid + offset * n_hat),
-            text,
+            txt,
             ha="center",
             va="center",
             fontsize=fontsize,
         )
 
-    ###########################################################################
-    # Finishing touches
-    ###########################################################################
+    # ------------------------------------------------------- finish up
     ax.axis("equal")
     if axis_off:
         ax.axis("off")
-
     if show:
         plotmath.show()
     else:
