@@ -289,7 +289,10 @@ def draw_triangle(
     verts_sp = tri.vertices
     verts = [_to_xy(v) for v in verts_sp]  # plain tuples
     side_lengths = [float(s.length.evalf()) for s in tri.sides]
-    in_r = float(tri.incircle.radius.evalf()) if tri.is_regular is False else None
+    try:
+        in_r = float(tri.incircle.radius.evalf())
+    except Exception:  # degenerate triangle, or no incircle
+        in_r = None
     centroid = np.mean(verts, axis=0)
 
     # A pleasant stable colour choice
