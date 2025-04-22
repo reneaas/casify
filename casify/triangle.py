@@ -149,7 +149,8 @@ def draw_triangle(
         adj2 = np.linalg.norm(np.array(v) - np.array(p2))
         r_i = radius if radius is not None else _arc_radius(adj1, adj2, in_r)
 
-        _draw_angle_arc(ax, v, p1, p2, r_i, show_ang)
+        if show_ang:
+            _draw_angle_arc(ax, v, p1, p2, r_i, show_ang)
 
         # closer vertex label (0.7 r_i)
         ax.text(
