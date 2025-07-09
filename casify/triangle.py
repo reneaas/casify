@@ -178,14 +178,27 @@ def draw_triangle(
 
         offset = 0.07 * float(seg.length.evalf())
 
-        if lab is True:
-            txt = rf"${sp.latex(seg.length)}$"
-        else:
-            txt = rf"${lab}$"
+        if lab is not False:
+            if lab is True:
 
-        if numerical_len:
-            num = float(seg.length.evalf())
-            txt = rf"${num:.0f}$" if abs(num - round(num)) < 1e-8 else rf"${num:.2f}$"
+                if numerical_len:
+                    num = float(seg.length.evalf())
+                    txt = (
+                        rf"${num:.0f}$"
+                        if abs(num - round(num)) < 1e-8
+                        else rf"${num:.2f}$"
+                    )
+                else:
+                    txt = rf"${sp.latex(seg.length)}$"
+            else:
+                txt = rf"${lab}$"
+            ax.text(
+                *(mid + offset * n_hat),
+                txt,
+                ha="center",
+                va="center",
+                fontsize=fontsize,
+            )
 
         ax.text(
             *(mid + offset * n_hat),
